@@ -3,7 +3,8 @@ const getOperators = require('./methods/getOperators');
 const getRanks = require('./methods/getRanks');
 const getSeasons = require('./methods/getSeasons');
 const getServiceSatus = require('./methods/getServiceStatus');
-const tokenManager = require('./methods/tokenManager');
+const getAttachment = require('./methods/getAttachment');
+const getCharms = require('./methods/getCharms');
 
 const r6Info = {
   getMaps,
@@ -11,11 +12,8 @@ const r6Info = {
   getRanks,
   getSeasons,
   getServiceSatus,
-  tokenManager: {
-    generateToken: tokenManager.generateToken,
-    isValidToken: tokenManager.isValidToken,
-    getToken: tokenManager.getToken
-  },
+  getAttachment,
+  getCharms,
 };
 
 module.exports = r6Info;

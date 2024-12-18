@@ -1,24 +1,12 @@
 const axiosInstance = require('../axiosInstance/axiosInstance');
-const { getToken, isValidToken } = require('./tokenManager');
 const buildUrlAndParams = require('./util');
 
-async function getMaps(userId, { name, location, releaseDate, playlists, mapReworked } = {}) {
+async function getMaps({ name, location, releaseDate, playlists, mapReworked } = {}) {
   try {
-
-    let token = await getToken(userId);
-    let isValid = await isValidToken(token, userId);
-
-    if (!token || !isValid) {
-      console.log('Token expired');
-    }
 
     const url = buildUrlAndParams('/maps', { name, location, releaseDate, playlists, mapReworked });
 
-    const response = await axiosInstance.get(url, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
+    const response = await axiosInstance.get(url);
 
     return response.data;
   } catch (error) {
