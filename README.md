@@ -21,7 +21,7 @@ npm install r6info.js
 npm i r6-info.js
 ```
 
-`Last updated Y9S4`
+`Last updated Y10S1`
 
 ## Getting Rank Information
 
