@@ -12,7 +12,7 @@ async function getOperators({ name, safename, realname, birthplace, age, date_of
   } catch (error) {
     console.error('Error during the getOperators request:', error.message);
     if (error.response && error.response.status === 401) {
-      throw new Error('Token expired or invalid');
+      throw new Error('request error');
     }
     throw error;
   }

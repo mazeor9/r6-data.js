@@ -12,7 +12,7 @@ async function getSeasons({ name, map, operators, weapons, description, code, st
   } catch (error) {
     console.error('Error during the getSeasons request:', error.message);
     if (error.response && error.response.status === 401) {
-      throw new Error('Token expired or invalid');
+      throw new Error('request error');
     }
     throw error;
   }

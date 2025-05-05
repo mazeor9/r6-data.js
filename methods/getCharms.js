@@ -12,7 +12,7 @@ async function getCharms({ name, collection, rarity, availability, bundle, seaso
   } catch (error) {
     console.error('Errore during the getCharms request:', error.message);
     if (error.response && error.response.status === 401) {
-      throw new Error('Token expired or invalid');
+      throw new Error('request error');
     }
     throw error;
   }

@@ -12,7 +12,7 @@ async function getMaps({ name, location, releaseDate, playlists, mapReworked } =
   } catch (error) {
     console.error('Error during the getMaps request:', error.message);
     if (error.response && error.response.status === 401) {
-      throw new Error('Token expired or invalid');
+      throw new Error('request error');
     }
     throw error;
   }

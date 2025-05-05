@@ -16,7 +16,7 @@ async function getRanks({ name, min_mmr, max_mmr, version } = {}) {
   } catch (error) {
     console.error('Error during the getRanks request:', error.message);
     if (error.response && error.response.status === 401) {
-      throw new Error('Token expired or invalid');
+      throw new Error('request error');
     }
     throw error;
   }

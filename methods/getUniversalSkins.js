@@ -1,14 +1,16 @@
 const axiosInstance = require('../axiosInstance/axiosInstance');
+const buildUrlAndParams = require('./util'); 
 
-async function getServiceStatus() {
+async function getUniversalSkins({ name } = {}) {
   try {
 
-    let url = '/serviceStatus';
+    const url = buildUrlAndParams('/universalSkins', { name });
+
     const response = await axiosInstance.get(url);
 
     return response.data;
   } catch (error) {
-    console.error('Error during the service status request:', error.message);
+    console.error('Error during the getUniversalSkins request:', error.message);
     if (error.response && error.response.status === 401) {
       throw new Error('request error');
     }
@@ -16,4 +18,4 @@ async function getServiceStatus() {
   }
 }
 
-module.exports = getServiceStatus;
+module.exports = getUniversalSkins;

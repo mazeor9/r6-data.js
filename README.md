@@ -493,6 +493,70 @@ The `getCharms()` function allows you to retrieve information about the charms a
 - `bundle`: Filter by bundle name
 - `season`: Filter by season released
 
+## Getting Weapon Information
+
+The `getWeapons()` function allows you to retrieve information about the weapons available in Rainbow Six Siege. You can get a list of all weapons or filter them by name. Here's an example of how to use the `getWeapons()` function:
+
+```javascript
+const r6Info = require('r6-info.js');
+
+async function main() {
+
+  try {
+
+    // Get all weapons
+    const weapons = await r6Info.getWeapons();
+    console.log('All weapons:', weapons);
+    
+    // Filter weapons by name
+    const filteredWeaponsByName = await r6Info.getWeapons({ name: 'F2' });
+    console.log('Weapons filtered by name:', filteredWeaponsByName);
+    
+  } catch (error) {
+    console.error('Error while requesting weapons:', error.message);
+  }
+}
+
+main();
+```
+
+The `getWeapons()` function retrieves information about the weapons in Rainbow Six Siege. You can:
+
+- Retrieve all weapons by calling `getWeapons()` without any parameters
+- Filter weapons by name using the `name` parameter
+
+## Getting Universal Skin Information
+
+The `getUniversalSkins()` function allows you to retrieve information about the universal skins available in Rainbow Six Siege. You can get a list of all universal skins or filter them by name. Here's an example of how to use the `getUniversalSkins()` function:
+
+```javascript
+const r6Info = require('r6-info.js');
+
+async function main() {
+
+  try {
+
+    // Get all universal skins
+    const universalSkins = await r6Info.getUniversalSkins();
+    console.log('All universal skins:', universalSkins);
+    
+    // Filter universal skins by name
+    const filteredSkinsByName = await r6Info.getUniversalSkins({ name: 'Black Ice' });
+    console.log('Universal skins filtered by name:', filteredSkinsByName);
+    
+  } catch (error) {
+    console.error('Error while requesting universal skins:', error.message);
+  }
+}
+
+main();
+```
+
+The `getUniversalSkins()` function retrieves information about universal weapon skins in Rainbow Six Siege. You can:
+
+- Retrieve all universal skins by calling `getUniversalSkins()` without any parameters
+- Filter universal skins by name using the name parameter
+
 ## Error Handling
 The package functions throw an exception if an error occurs during API requests. Make sure to handle errors appropriately using try-catch blocks.
 
