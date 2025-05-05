@@ -1,6 +1,6 @@
 {
   "name": "r6-info.js",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,7 @@
     "r6 siege",
     "siege",
     "R6"
-],
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
