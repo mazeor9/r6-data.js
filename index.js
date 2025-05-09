@@ -2,7 +2,7 @@ const getMaps = require('./methods/getMaps');
 const getOperators = require('./methods/getOperators');
 const getRanks = require('./methods/getRanks');
 const getSeasons = require('./methods/getSeasons');
-const getServiceSatus = require('./methods/getServiceStatus');
+const getServiceStatus = require('./methods/getServiceStatus');
 const getAttachment = require('./methods/getAttachment');
 const getCharms = require('./methods/getCharms');
 const getWeapons = require('./methods/getWeapons');
@@ -13,7 +13,7 @@ const r6Info = {
   getOperators,
   getRanks,
   getSeasons,
-  getServiceSatus,
+  getServiceStatus,
   getAttachment,
   getCharms,
   getWeapons,
