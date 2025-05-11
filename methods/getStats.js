@@ -46,6 +46,18 @@ async function getStats({ type, email, password, nameOnPlatform, platformType, p
     const url = buildUrlAndParams('/stats', params);
 
     const response = await axiosInstance.get(url);
+    
+    if (response.data && 
+        response.data.platform_families_full_profiles && 
+        response.data.platform_families_full_profiles.length > 0) {
+      
+      response.data.platform_families_full_profiles.forEach(profile => {
+        if (profile.board_ids_full_profiles) {
+          console.log('Board IDs Full Profiles:', JSON.stringify(profile.board_ids_full_profiles, null, 2));
+        }
+      });
+    }
+    
     return response.data;
   } catch (error) {
     console.error(`Error during the getStats (${type}) request:`, error.message);
