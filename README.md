@@ -23,6 +23,45 @@ npm i r6-info.js
 
 `Last updated Y10S1`
 
+## Getting Player Stats and Account Information
+
+The `getStats()` function allows you to retrieve player statistics and account information from the official Rainbow Six Siege API. This function supports two types of requests: `accountInfo` for retrieving player profile data and `stats` for retrieving gameplay statistics.
+
+```javascript
+const r6Info = require('r6-info.js');
+
+async function main() {
+  try {
+    // Get player account information
+    const accountInfo = await r6Info.getStats({
+      type: 'accountInfo',
+      email: 'your-ubisoft-email@example.com',
+      password: 'your-password',
+      nameOnPlatform: 'PlayerName',
+      platformType: 'uplay'
+    });
+    console.log('Player account information:', accountInfo);
+    
+    // Get player statistics
+    const playerStats = await r6Info.getStats({
+      type: 'stats',
+      email: 'your-ubisoft-email@example.com',
+      password: 'your-password',
+      nameOnPlatform: 'PlayerName',
+      platformType: 'uplay',
+      platform_families: 'pc'
+    });
+    console.log('Player statistics:', playerStats);
+    
+  } catch (error) {
+    console.error('Error retrieving player data:', error.message);
+  }
+}
+
+main();
+```
+
+
 ## Getting Rank Information
 
 The `getRanks()` function supports retrieving rank information across different versions of the game's ranking system, from v1 to v6. This flexibility allows users to query rank data that aligns with specific game seasons or ranking system updates. Here are examples demonstrating how to use the `getRanks()` function for each version, including filtering options for `min_mmr` and `max_mmr`.

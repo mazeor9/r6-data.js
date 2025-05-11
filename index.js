@@ -7,6 +7,8 @@ const getAttachment = require('./methods/getAttachment');
 const getCharms = require('./methods/getCharms');
 const getWeapons = require('./methods/getWeapons');
 const getUniversalSkins = require('./methods/getUniversalSkins');
+const getSearchAll = require('./methods/getSearchAll');
+const getStats = require('./methods/getStats');
 
 const r6Info = {
   getMaps,
@@ -18,6 +20,8 @@ const r6Info = {
   getCharms,
   getWeapons,
   getUniversalSkins,
+  getSearchAll,
+  getStats,
 };
 
 module.exports = r6Info;
