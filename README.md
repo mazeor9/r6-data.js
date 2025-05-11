@@ -61,6 +61,98 @@ async function main() {
 main();
 ```
 
+### Parameters
+
+The `getStats()` function accepts an object with the following parameters:
+For both request types:
+
+- `type`: (Required) The type of request - must be either "accountInfo" or "stats"
+- `email`: (Required) Your Ubisoft account email
+- `password`: (Required) Your Ubisoft account password
+- `nameOnPlatform`: (Required) The player's name on the platform
+- `platformType`: (Required) The platform type - "uplay", "psn", or "xbl"
+
+Additional parameters for stats type:
+
+`platform_families`: (Required) The platform family - "pc" or "console"
+
+### Account Information
+When using the `accountInfo` type, you'll receive data about the player's profile, including:
+
+- Player level and experience
+- Clearance level
+- Achievement status
+- Play time statistics
+- Player profile settings and customization
+
+### Player Statistics
+When using the stats type, you'll receive detailed gameplay statistics, including:
+
+- Rank information
+- MMR (Matchmaking Rating)
+- Win/loss records
+- Seasonal performance data
+- Skill metrics across different gameplay modes
+
+## Searching Across All Entities
+
+The `getSearchAll()` function allows you to search across all Rainbow Six Siege entities (operators, weapons, maps, seasons, charms, and attachments) with a single query. This is useful for finding relevant information across multiple categories at once.
+
+```javascript
+const r6Info = require('r6-info.js');
+
+async function main() {
+  try {
+    // Search for all entities containing "black"
+    const searchResults = await r6Info.getSearchAll('black');
+    console.log('Search results summary:', searchResults.summary);
+    
+    // Access specific result categories
+    console.log('Operator results:', searchResults.results.operators);
+    console.log('Weapon results:', searchResults.results.weapons);
+    console.log('Map results:', searchResults.results.maps);
+    console.log('Season results:', searchResults.results.seasons);
+    console.log('Charm results:', searchResults.results.charms);
+    console.log('Attachment results:', searchResults.results.attachments);
+    
+    // Search for a specific operator
+    const operatorSearch = await r6Info.getSearchAll('ash');
+    console.log('Ash search results:', operatorSearch);
+    
+    // Search for a specific map
+    const mapSearch = await r6Info.getSearchAll('bank');
+    console.log('Bank search results:', mapSearch);
+    
+  } catch (error) {
+    console.error('Error during search:', error.message);
+  }
+}
+
+main();
+```
+
+### Parameters
+
+The `getSearchAll()` function accepts a single required parameter:
+
+- `query`: (Required) The search term to query across all entities
+
+### Search Results
+
+The function returns a structured object containing:
+
+- query: The original search term
+- summary: A summary object with counts of results by category and total
+- results: An object containing arrays of results for each entity type:
+  - operators: Array of operator results
+  - weapons: Array of weapon results
+  - maps: Array of map results
+  - seasons: Array of season results
+  - charms: Array of charm results
+  - attachments: Array of attachment results
+
+
+Each result includes an `entity_type` field indicating its category, along with relevant data fields for that entity type.
 
 ## Getting Rank Information
 
