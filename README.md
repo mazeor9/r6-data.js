@@ -40,7 +40,8 @@ async function main() {
       nameOnPlatform: 'PlayerName',
       platformType: 'uplay'
     });
-    console.log('Player account information:', accountInfo);
+    
+    return  accountInfo;
     
     // Get player statistics
     const playerStats = await r6Info.getStats({
@@ -51,7 +52,21 @@ async function main() {
       platformType: 'uplay',
       platform_families: 'pc'
     });
-    console.log('Player statistics:', playerStats);
+
+    return  playerStats;
+
+    // Get player statistics for ranked mode only
+    const rankedStats = await r6Info.getStats({
+      type: 'stats',
+      email: 'your-ubisoft-email@example.com',
+      password: 'your-password',
+      nameOnPlatform: 'PlayerName',
+      platformType: 'uplay',
+      platform_families: 'pc',
+      board_id: 'ranked'
+    });
+    
+    return rankedStats;
     
   } catch (error) {
     console.error('Error retrieving player data:', error.message);
@@ -75,6 +90,7 @@ For both request types:
 Additional parameters for stats type:
 
 `platform_families`: (Required) The platform family - "pc" or "console"
+`board_id`: (Optional) The game mode to filter statistics - "casual", "event", "warmup", "standard", or "ranked"
 
 ### Account Information
 When using the `accountInfo` type, you'll receive data about the player's profile, including:
@@ -93,6 +109,14 @@ When using the stats type, you'll receive detailed gameplay statistics, includin
 - Win/loss records
 - Seasonal performance data
 - Skill metrics across different gameplay modes
+
+You can filter these statistics by game mode using the `board_id` parameter:
+
+- `casual`: Statistics for casual matches
+- `event`: Statistics for limited-time events
+- `warmup`: Statistics for warmup matches
+- `standard`: Statistics for standard matches
+- `ranked`: Statistics for ranked competitive matches
 
 ## Searching Across All Entities
 

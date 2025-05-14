@@ -10,9 +10,10 @@ const buildUrlAndParams = require('./util');
  * @param {string} params.nameOnPlatform - Player name on the platform
  * @param {string} params.platformType - Platform type (uplay, psn, xbl)
  * @param {string} [params.platform_families] - Platform families (required for stats type): "pc" or "console"
+ * @param {string} [params.board_id] - Game mode to filter stats (casual, event, warmup, standard, ranked)
  * @returns {Promise<Object>} - Player stats or account information
  */
-async function getStats({ type, email, password, nameOnPlatform, platformType, platform_families } = {}) {
+async function getStats({ type, email, password, nameOnPlatform, platformType, platform_families, board_id } = {}) {
   try {
     // Validate required parameters
     if (!type || !email || !password || !nameOnPlatform || !platformType) {
@@ -29,6 +30,11 @@ async function getStats({ type, email, password, nameOnPlatform, platformType, p
       throw new Error('platform_families parameter is required for stats type');
     }
 
+    // Validate board_id if provided
+    if (board_id && !['casual', 'event', 'warmup', 'standard', 'ranked'].includes(board_id)) {
+      throw new Error('Invalid board_id. Must be one of: casual, event, warmup, standard, ranked');
+    }
+
     // Build the URL with parameters
     const params = {
       type,
@@ -41,6 +47,11 @@ async function getStats({ type, email, password, nameOnPlatform, platformType, p
     // Add platform_families for stats type
     if (type === 'stats') {
       params.platform_families = platform_families;
+      
+      // Add board_id if provided
+      if (board_id) {
+        params.board_id = board_id;
+      }
     }
 
     const url = buildUrlAndParams('/stats', params);
@@ -51,9 +62,21 @@ async function getStats({ type, email, password, nameOnPlatform, platformType, p
         response.data.platform_families_full_profiles && 
         response.data.platform_families_full_profiles.length > 0) {
       
+      // If board_id is specified, filter the response data
+      if (type === 'stats' && board_id && response.data.platform_families_full_profiles) {
+        response.data.platform_families_full_profiles.forEach(profile => {
+          if (profile.board_ids_full_profiles) {
+            // Filter to only include the specified board_id
+            profile.board_ids_full_profiles = profile.board_ids_full_profiles.filter(
+              board => board.board_id === board_id
+            );
+          }
+        });
+      }
+      
       response.data.platform_families_full_profiles.forEach(profile => {
         if (profile.board_ids_full_profiles) {
-          console.log('Board IDs Full Profiles:', JSON.stringify(profile.board_ids_full_profiles, null, 2));
+          console.log(JSON.stringify(profile.board_ids_full_profiles, null, 2));
         }
       });
     }
