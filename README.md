@@ -118,6 +118,64 @@ You can filter these statistics by game mode using the `board_id` parameter:
 - `standard`: Statistics for standard matches
 - `ranked`: Statistics for ranked competitive matches
 
+## Comparing Player Statistics
+
+The `getPlayerComparison()` function allows you to compare the statistics of two Rainbow Six Siege players side by side. This function fetches the stats for both players and provides a detailed comparison with metrics, advantages, and an overall winner determination.
+
+```javascript
+const r6Info = require('r6-info.js');
+
+async function main() {
+  try {
+    // Compare two players using the same credentials
+    const comparison = await r6Info.getPlayerComparison({
+      email: 'your-ubisoft-email@example.com',
+      password: 'your-password',
+      player1: {
+        nameOnPlatform: 'PlayerOne',
+        platformType: 'uplay'
+      },
+      player2: {
+        nameOnPlatform: 'PlayerTwo',
+        platformType: 'uplay'
+      },
+      platform_families: 'pc',
+      board_id: 'ranked'
+    });
+
+    console.log('Comparison winner:', comparison.winner);
+    console.log('Player 1 advantages:', comparison.comparison.advantages.player1);
+    console.log('Player 2 advantages:', comparison.comparison.advantages.player2);
+    console.log('Detailed metrics:', comparison.comparison.metrics);
+
+    // Compare players with different credentials (if needed)
+    const comparisonDifferentCreds = await r6Info.getPlayerComparison({
+      email: 'default@email.com',
+      password: 'defaultPassword',
+      player1: {
+        nameOnPlatform: 'PlayerOne',
+        platformType: 'uplay',
+        email: 'player1@email.com',
+        password: 'player1Password'
+      },
+      player2: {
+        nameOnPlatform: 'PlayerTwo',
+        platformType: 'psn',
+        email: 'player2@email.com',
+        password: 'player2Password'
+      },
+      platform_families: 'console',
+      board_id: 'casual'
+    });
+
+  } catch (error) {
+    console.error('Error during player comparison:', error.message);
+  }
+}
+
+main();
+```
+
 ## Searching Across All Entities
 
 The `getSearchAll()` function allows you to search across all Rainbow Six Siege entities (operators, weapons, maps, seasons, charms, and attachments) with a single query. This is useful for finding relevant information across multiple categories at once.
