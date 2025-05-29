@@ -175,6 +175,52 @@ async function main() {
 
 main();
 ```
+### Parameters
+
+The `getPlayerComparison()` function accepts an object with the following parameters:
+Required parameters:
+
+`email`: Your Ubisoft account email (used for both players if individual credentials not provided)
+`password`: Your Ubisoft account password (used for both players if individual credentials not provided)
+
+`player1`: Object containing first player's information
+
+`nameOnPlatform`: First player's name on platform
+`platformType`: First player's platform type ("uplay", "psn", or "xbl")
+`email`: (Optional) Specific email for player1
+`password`: (Optional) Specific password for player1
+
+
+`player2`: Object containing second player's information
+
+`nameOnPlatform`: Second player's name on platform
+`platformType`: Second player's platform type ("uplay", "psn", or "xbl")
+`email`: (Optional) Specific email for player2
+`password`: (Optional) Specific password for player2
+
+
+
+### Optional parameters:
+
+`platform_families`: Platform family - "pc" or "console" (default: "pc")
+`board_id`: Game mode to compare - "casual", "event", "warmup", "standard", or "ranked" (default: "ranked")
+
+### Comparison Results
+The function returns a comprehensive comparison object containing:
+
+`player1` and `player2`: Individual player data with names, platforms, and extracted stats
+`comparison`: Detailed comparison results including:
+
+`winner`: Overall winner ("player1", "player2", or "tie")
+`metrics`: Detailed comparison of each statistic (kills, deaths, K/D ratio, win rate, rank, etc.)
+`advantages`: Arrays showing what each player excels at
+`summary`: Score breakdown and competitiveness level
+
+
+`metadata`: Comparison details (platform, game mode, timestamp)
+
+The comparison analyzes multiple metrics including kills, deaths, wins, losses, K/D ratio, win rate, current rank, max rank, and rank points to determine the overall better performer.
+
 
 ## Searching Across All Entities
 
