@@ -89,8 +89,8 @@ For both request types:
 
 Additional parameters for stats type:
 
-`platform_families`: (Required) The platform family - "pc" or "console"
-`board_id`: (Optional) The game mode to filter statistics - "casual", "event", "warmup", "standard", or "ranked"
+- `platform_families`: (Required) The platform family - "pc" or "console"
+- `board_id`: (Optional) The game mode to filter statistics - "casual", "event", "warmup", "standard", or "ranked"
 
 ### Account Information
 When using the `accountInfo` type, you'll receive data about the player's profile, including:
@@ -180,30 +180,26 @@ main();
 The `getPlayerComparison()` function accepts an object with the following parameters:
 Required parameters:
 
-`email`: Your Ubisoft account email (used for both players if individual credentials not provided)
-`password`: Your Ubisoft account password (used for both players if individual credentials not provided)
+- `email`: Your Ubisoft account email (used for both players if individual credentials not provided)
+- `password`: Your Ubisoft account password (used for both players if individual credentials not provided)
 
-`player1`: Object containing first player's information
-
-`nameOnPlatform`: First player's name on platform
-`platformType`: First player's platform type ("uplay", "psn", or "xbl")
-`email`: (Optional) Specific email for player1
-`password`: (Optional) Specific password for player1
-
-
-`player2`: Object containing second player's information
-
-`nameOnPlatform`: Second player's name on platform
-`platformType`: Second player's platform type ("uplay", "psn", or "xbl")
-`email`: (Optional) Specific email for player2
-`password`: (Optional) Specific password for player2
+- `player1`: Object containing first player's information
+- `nameOnPlatform`: First player's name on platform
+- `platformType`: First player's platform type ("uplay", "psn", or "xbl")
+- `email`: (Optional) Specific email for player1
+- `password`: (Optional) Specific password for player1
 
 
+- `player2`: Object containing second player's information
+- `nameOnPlatform`: Second player's name on platform
+- `platformType`: Second player's platform type ("uplay", "psn", or "xbl")
+- `email`: (Optional) Specific email for player2
+- `password`: (Optional) Specific password for player2
 
 ### Optional parameters:
 
-`platform_families`: Platform family - "pc" or "console" (default: "pc")
-`board_id`: Game mode to compare - "casual", "event", "warmup", "standard", or "ranked" (default: "ranked")
+- `platform_families`: Platform family - "pc" or "console" (default: "pc")
+- `board_id`: Game mode to compare - "casual", "event", "warmup", "standard", or "ranked" (default: "ranked")
 
 ### Comparison Results
 The function returns a comprehensive comparison object containing:
@@ -441,29 +437,6 @@ async function main() {
     const filteredOperatorsBySeasonIntroduced = await r6Info.getOperators({ season_introduced: 'Y1S1' });
     console.log('Operators filtered by season introduced:', filteredOperatorsBySeasonIntroduced);
     
-    // Filter operators by health
-    const filteredOperatorsByHealth = await r6Info.getOperators({ health: 1 });
-    console.log('Operators filtered by health:', filteredOperatorsByHealth);
-    
-    // Filter operators by speed
-    const filteredOperatorsBySpeed = await r6Info.getOperators({ speed: 3 });
-    console.log('Operators filtered by speed:', filteredOperatorsBySpeed);
-
-    // Filter operators by unit
-    const filteredOperatorsByUnit = await r6Info.getOperators({ unit: 'FBI SWAT' });
-    console.log('Operators filtered by unit:', filteredOperatorsByUnit);
-
-    // Filter operators by country code
-    const filteredOperatorsByCountryCode = await r6Info.getOperators({ country_code: 'US' });
-    console.log('Operators filtered by country code:', filteredOperatorsByCountryCode);
-
-    // Filter operators by roles
-    const filteredOperatorsByRoles = await r6Info.getOperators({ roles: 'attacker' });
-    console.log('Operators filtered by roles:', filteredOperatorsByRoles);
-
-    // Filter operators by side
-    const filteredOperatorsBySide = await r6Info.getOperators({ side: 'attacker' });
-    console.log('Operators filtered by side:', filteredOperatorsBySide);
     } catch (error) {
     console.error('Error while requesting operators:', error.message);
     }
@@ -480,14 +453,6 @@ main();
 6. Filtering operators by age using the `age` parameter.
 7. Filtering operators by date of birth using the `date_of_birth` parameter.
 8. Filtering operators by season introduced using the `season_introduced` parameter.
-9. Filtering operators by health using the `health` parameter.
-10. Filtering operators by speed using the `speed` parameter.
-11. Filtering operators by unit using the `unit` parameter.
-12. Filtering operators by country code using the `country_code` parameter.
-13. Filtering operators by roles using the `roles` parameter.
-14. Filtering operators by side using the `side` parameter.
-
-These filtering options provide flexibility in retrieving specific subsets of operators based on various criteria. You can use them individually or combine them to narrow down the results according to your needs.
 
 ## Getting Season Information
 
@@ -520,18 +485,6 @@ async function main() {
     const filteredSeasonsByWeapons = await r6Info.getSeasons({ weapons: 'C8-SFW, Super 90' });
     console.log('Seasons filtered by weapons:', filteredSeasonsByWeapons);
 
-    // Filter seasons by description
-    const filteredSeasonsByDescription = await r6Info.getSeasons({ description: 'Operation Black Ice brings a new map and two new operators to the game.' });
-    console.log('Seasons filtered by description:', filteredSeasonsByDescription);
-
-    // Filter seasons by code
-    const filteredSeasonsByCode = await r6Info.getSeasons({ code: 'Y1S1' });
-    console.log('Seasons filtered by code:', filteredSeasonsByCode);
-
-    // Filter seasons by start date
-    const filteredSeasonsByStartDate = await r6Info.getSeasons({ startDate: '2016-02-02' });
-    console.log('Seasons filtered by start date:', filteredSeasonsByStartDate);
-    
   } catch (error) {
     console.error('Error while requesting seasons:', error.message);
   }
@@ -541,14 +494,10 @@ main();
 ```
 
 Retrieving all seasons by calling `getSeasons()` without any parameters.
-Filtering seasons by name using the `name` parameter.
-Filtering seasons by map using the `map` parameter.
-Filtering seasons by operators using the `operators` parameter.
-Filtering seasons by weapons using the `weapons` parameter.
-Filtering seasons by description using the `description` parameter.
-Filtering seasons by code using the `code` parameter.
-Filtering seasons by start date using the `startDate` parameter.
-These filtering options allow you to retrieve specific seasons based on different criteria. You can use them individually or combine them to get the desired subset of seasons.
+- Filtering seasons by name using the `name` parameter.
+- Filtering seasons by map using the `map` parameter.
+- Filtering seasons by operators using the `operators` parameter.
+- Filtering seasons by weapons using the `weapons` parameter.
 
 ## Getting Attachment Information
 
@@ -581,14 +530,6 @@ async function main() {
     const filteredAttachmentsByAvailability = await r6Info.getAttachment({ availability: 'removed' });
     console.log('Attachments filtered by availability:', filteredAttachmentsByAvailability);
     
-    // Filter attachments by bundle
-    const filteredAttachmentsByBundle = await r6Info.getAttachment({ bundle: '"Crimson Heist Battlepass"' });
-    console.log('Attachments filtered by bundle:', filteredAttachmentsByBundle);
-    
-    // Filter attachments by season
-    const filteredAttachmentsBySeason = await r6Info.getAttachment({ season: '"North Star"' });
-    console.log('Attachments filtered by season:', filteredAttachmentsBySeason);
-    
   } catch (error) {
     console.error('Error while requesting attachments:', error.message);
   }
@@ -598,14 +539,10 @@ main();
 ```
 
 Retrieving all attachments by calling `getAttachment()` without any parameters.
-Filtering attachments by name using the `name` parameter.
-Filtering attachments by style using the `style` parameter.
-Filtering attachments by rarity using the `rarity` parameter.
-Filtering attachments by availability using the `availability` parameter.
-Filtering attachments by bundle using the `bundle` parameter.
-Filtering attachments by season using the `season` parameter.
-These filtering options provide flexibility in retrieving specific subsets of attachments based on various criteria. You can use them individually or combine them to narrow down the results according to your needs.
-
+- Filtering attachments by name using the `name` parameter.
+- Filtering attachments by style using the `style` parameter.
+- Filtering attachments by rarity using the `rarity` parameter.
+- Filtering attachments by availability using the `availability` parameter.
 
 ## Getting Charm Information
 
