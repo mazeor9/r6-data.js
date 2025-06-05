@@ -2,14 +2,20 @@ const r6Info = require('r6-info.js');
 
 async function main() {
 
-    try {
+  try {
 
-      const maps = await r6Info.getMaps({ name: 'Bank' });
-      console.log('Maps:', maps);
+    await r6Info.generateDashboard({
+      email: 'youremail',
+      password: 'yourpassword',
+      nameOnPlatform: 'player',
+      platformType: 'uplay',
+      outputPath: './my-dashboard.html',
+      theme: 'dark',
+      includeCharts: true,
+      includeOperatorStats: true,
+      includeMapStats: true
+    });
 
-      const service = await r6Info.getServiceStatus();
-      console.log('Service:', service);
-  
   } catch (error) {
     console.error('Errore durante le richieste:', error.message);
   }
