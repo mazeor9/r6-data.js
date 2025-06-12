@@ -1,6 +1,4 @@
-
 ## r6-info.js
-
   A wrapper for the R6Siege API that gives you information about player's stats, maps, operators, ranks, seasons, charms etc.
 
   <div align="center">
