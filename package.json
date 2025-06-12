@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mazeor7/r6-info.js"
+    "url": "git+https://github.com/mazeor7/r6-info.js.git"
   },
   "keywords": [
     "r6",
