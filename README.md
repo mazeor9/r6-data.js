@@ -1,6 +1,8 @@
 
-## R6-INFO.js
-  A simple wrapper for the Rainbow Six Siege API that allows you to easily retrieve information about maps, operators, ranks, seasons, charms and service status.
+## r6-info.js
+
+  A wrapper for the R6Siege API that gives you information about player's stats, maps, operators, ranks, seasons, charms etc.
+
   <div align="center">
   <p>
     <a href="https://github.com/mazeor7/r6-info.js/releases/latest">
@@ -15,13 +17,13 @@
 ## Installation
 
 ```sh
-npm install r6info.js
+npm install r6-info.js
 ```
 ```sh
 npm i r6-info.js
 ```
 
-`Last updated Y10S1`
+`Last updated Y10S2`
 
 ## Getting Player Stats and Account Information
 
