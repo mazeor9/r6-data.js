@@ -1,5 +1,5 @@
 {
-  "name": "r6-info.js",
+  "name": "r6-data.js",
   "version": "2.8.3",
   "description": "A wrapper for the Rainbow Six Siege API that gives you information about player's stats, maps, operators, ranks, seasons, charms etc",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mazeor7/r6-info.js.git"
+    "url": "git+https://github.com/mazeor7/r6-data.js"
   },
   "keywords": [
     "r6",
@@ -45,9 +45,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^1.9.0",
-    "fs-extra": "^11.3.0",
-    "ms": "^2.1.3",
-    "path": "^0.12.7"
+    "ms": "^2.1.3"
   },
   "devDependencies": {
     "@types/node": "^22.15.3"

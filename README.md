@@ -1,24 +1,24 @@
-## r6-info.js
+## r6-data.js
   A wrapper for the R6Siege API that gives you information about player's stats, maps, operators, ranks, seasons, charms etc.
 
   <div align="center">
   <p>
-    <a href="https://github.com/mazeor7/r6-info.js/releases/latest">
-  <img src="https://img.shields.io/github/v/release/mazeor7/r6-info.js?style=for-the-badge" alt="GitHub release (latest SemVer)" /></a>
-    <a href="https://github.com/mazeor7/r6-info.js/releases/latest">
-    <img src="https://img.shields.io/github/release-date/mazeor7/r6-info.js?label=latest%20release&style=for-the-badge" alt="Latest release" /></a>
-   <a href="https://www.npmjs.com/package/r6-info.js"><img src="https://img.shields.io/npm/v/r6-info.js.svg?logo=npm&style=for-the-badge" alt="npm version" /></a>
-    <a href="https://www.npmjs.com/package/r6-info.js"><img src="https://img.shields.io/npm/dt/r6-info.js.svg?style=for-the-badge" alt="NPM downloads" /></a>
+    <a href="https://github.com/mazeor7/r6-data.js/releases/latest">
+  <img src="https://img.shields.io/github/v/release/mazeor7/r6-data.js?style=for-the-badge" alt="GitHub release (latest SemVer)" /></a>
+    <a href="https://github.com/mazeor7/r6-data.js/releases/latest">
+    <img src="https://img.shields.io/github/release-date/mazeor7/r6-data.js?label=latest%20release&style=for-the-badge" alt="Latest release" /></a>
+   <a href="https://www.npmjs.com/package/r6-data.js"><img src="https://img.shields.io/npm/v/r6-data.js.svg?logo=npm&style=for-the-badge" alt="npm version" /></a>
+    <a href="https://www.npmjs.com/package/r6-data.js"><img src="https://img.shields.io/npm/dt/r6-data.js.svg?style=for-the-badge" alt="NPM downloads" /></a>
   </p>
 </div>
 
 ## Installation
 
 ```sh
-npm install r6-info.js
+npm install r6-data.js
 ```
 ```sh
-npm i r6-info.js
+npm i r6-data.js
 ```
 
 `Last updated Y10S2`
@@ -28,7 +28,7 @@ npm i r6-info.js
 The `getStats()` function allows you to retrieve player statistics and account information from the official Rainbow Six Siege API. This function supports two types of requests: `accountInfo` for retrieving player profile data and `stats` for retrieving gameplay statistics.
 
 ```javascript
-const r6Info = require('r6-info.js');
+const r6Info = require('r6-data.js');
 
 async function main() {
   try {
@@ -126,7 +126,7 @@ The `generateDashboard()` method allows you to create personalized HTML dashboar
 ### Basic Syntax
 
 ```javascript
-const r6Info = require('r6-info.js');
+const r6Info = require('r6-data.js');
 
 await r6Info.generateDashboard({
   // Required parameters
@@ -192,7 +192,7 @@ customization: {
 ### 1. Minimal Dashboard
 
 ```javascript
-const r6Info = require('r6-info.js');
+const r6Info = require('r6-data.js');
 
 async function createMinimalDashboard() {
   try {
@@ -289,7 +289,7 @@ async function createCustomDashboard() {
 The `getSearchAll()` function allows you to search across all Rainbow Six Siege entities (operators, weapons, maps, seasons, charms, and attachments) with a single query. This is useful for finding relevant information across multiple categories at once.
 
 ```javascript
-const r6Info = require('r6-info.js');
+const r6Info = require('r6-data.js');
 
 async function main() {
   try {
@@ -363,7 +363,7 @@ The `getRanks()` function supports retrieving rank information across different 
 ### Version 1 (v1)
 
 ```javascript
-const r6Info = require('r6-info.js');
+const r6Info = require('r6-data.js');
 
 async function main() {
 
@@ -392,7 +392,7 @@ For the others versions you can replace the v1 with v2, v3... and the others par
 The `getServiceStatus()` function allows you to retrieve the current status of the Rainbow Six Siege game servers. This information can be useful for monitoring the health and availability of the game service. Here's an example of how to use the `getServiceStatus()` function:
 
 ```javascript
-const r6Info = require('r6-info.js');
+const r6Info = require('r6-data.js');
 
 async function main() {
 
@@ -414,7 +414,7 @@ main();
 The `getMaps()` function allows you to retrieve information about the maps available in Rainbow Six Siege. You can get a list of all maps or filter the maps based on specific criteria. Here's an example of how to use the `getMaps()` function:
 
 ```javascript
-const r6Info = require('r6-info.js');
+const r6Info = require('r6-data.js');
 
 async function main() {
 
@@ -465,7 +465,7 @@ You can use these filtering options individually or combine them to retrieve spe
 The `getOperators()` function allows you to retrieve information about the operators available in Rainbow Six Siege. You can get a list of all operators or filter the operators based on specific criteria. Here's an example of how to use the `getOperators()` function:
 
 ```javascript
-const r6Info = require('r6-info.js');
+const r6Info = require('r6-data.js');
 
 async function main() {
 
@@ -525,7 +525,7 @@ main();
 The `getSeasons()` function allows you to retrieve information about the seasons in Rainbow Six Siege. You can get a list of all seasons or filter the seasons based on specific criteria. Here's an example of how to use the `getSeasons()` function:
 
 ```javascript
-const r6Info = require('r6-info.js');
+const r6Info = require('r6-data.js');
 
 async function main() {
 
@@ -570,7 +570,7 @@ Retrieving all seasons by calling `getSeasons()` without any parameters.
 The `getAttachment()` function allows you to retrieve information about the attachments available in Rainbow Six Siege. You can get a list of all attachments or filter the attachments based on specific criteria. Here's an example of how to use the `getAttachment()` function:
 
 ```javascript
-const r6Info = require('r6-info.js');
+const r6Info = require('r6-data.js');
 
 async function main() {
 
@@ -613,7 +613,7 @@ Retrieving all attachments by calling `getAttachment()` without any parameters.
 ## Getting Charm Information
 
 ```javascript
-const r6Info = require('r6-info.js');
+const r6Info = require('r6-data.js');
 
 // Get all charms
 const charms = await r6Info.getCharms();
@@ -644,7 +644,7 @@ The `getCharms()` function allows you to retrieve information about the charms a
 The `getWeapons()` function allows you to retrieve information about the weapons available in Rainbow Six Siege. You can get a list of all weapons or filter them by name. Here's an example of how to use the `getWeapons()` function:
 
 ```javascript
-const r6Info = require('r6-info.js');
+const r6Info = require('r6-data.js');
 
 async function main() {
 
@@ -676,7 +676,7 @@ The `getWeapons()` function retrieves information about the weapons in Rainbow S
 The `getUniversalSkins()` function allows you to retrieve information about the universal skins available in Rainbow Six Siege. You can get a list of all universal skins or filter them by name. Here's an example of how to use the `getUniversalSkins()` function:
 
 ```javascript
-const r6Info = require('r6-info.js');
+const r6Info = require('r6-data.js');
 
 async function main() {
 
