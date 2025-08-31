@@ -35,8 +35,6 @@ async function main() {
     // Get player account information
     const accountInfo = await r6Info.getStats({
       type: 'accountInfo',
-      email: 'your-ubisoft-email@example.com',
-      password: 'your-password',
       nameOnPlatform: 'PlayerName',
       platformType: 'uplay'
     });
@@ -46,8 +44,6 @@ async function main() {
     // Get player statistics
     const playerStats = await r6Info.getStats({
       type: 'stats',
-      email: 'your-ubisoft-email@example.com',
-      password: 'your-password',
       nameOnPlatform: 'PlayerName',
       platformType: 'uplay',
       platform_families: 'pc'
@@ -58,8 +54,6 @@ async function main() {
     // Get player statistics for ranked mode only
     const rankedStats = await r6Info.getStats({
       type: 'stats',
-      email: 'your-ubisoft-email@example.com',
-      password: 'your-password',
       nameOnPlatform: 'PlayerName',
       platformType: 'uplay',
       platform_families: 'pc',
@@ -82,8 +76,6 @@ The `getStats()` function accepts an object with the following parameters:
 For both request types:
 
 - `type`: (Required) The type of request - must be either "accountInfo" or "stats"
-- `email`: (Required) Your Ubisoft account email
-- `password`: (Required) Your Ubisoft account password
 - `nameOnPlatform`: (Required) The player's name on the platform
 - `platformType`: (Required) The platform type - "uplay", "psn", or "xbl"
 
@@ -117,172 +109,6 @@ You can filter these statistics by game mode using the `board_id` parameter:
 - `warmup`: Statistics for warmup matches
 - `standard`: Statistics for standard matches
 - `ranked`: Statistics for ranked competitive matches
-
-
-## Dashboard Generator
-
-The `generateDashboard()` method allows you to create personalized HTML dashboards with Rainbow Six Siege statistics. You can choose exactly which elements to display and fully customize the design.
-
-### Basic Syntax
-
-```javascript
-const r6Info = require('r6-data.js');
-
-await r6Info.generateDashboard({
-  // Required parameters
-  email: 'your-ubisoft-email@example.com',
-  password: 'your-password',
-  nameOnPlatform: 'PlayerName',
-  platformType: 'uplay',
-  
-  // Optional configurations
-  theme: 'dark',
-  includeCharts: true,
-  includeOperatorStats: false,
-  // ... other options
-});
-```
-
-### Parameters
-
-### Required
-
-- `email`: Your Ubisoft account email
-- `password`: Your Ubisoft account password
-- `nameOnPlatform`: Player name on the platform
-- `platformType`: Platform type ("uplay", "psn", "xbl")
-
-### Basic Configuration
-
-- `platform_families`: "pc" or "console" (default: "pc")
-- `outputPath`: HTML file path (default: "./r6-dashboard.html")
-- `theme`: Dashboard theme (default: "dark")
-
-### Content Options
-
-- `includeCharts`: Show interactive charts (default: true)
-- `includeOperatorStats`: Show operator statistics (default: false)
-- `includeMapStats`: Show map statistics (default: false)
-- `includeRankedStats`: Show ranked statistics (default: true)
-- `includeCasualStats`: Show casual statistics (default: true)
-- `includeRankSection`: Show current rank section (default: true)
-- `includePlayerInfo`: Show account info (default: true)
-
-### Advanced Customization
-
-```javascript
-customization: {
-  title: 'Custom Dashboard Title',
-  logo: 'https://your-logo.png',
-  showFooter: true,
-  showTimestamp: true,
-  hiddenStats: ['deaths', 'losses'] // Hide specific statistics
-}
-```
-
-### Available Themes
-
-- `"dark"` - Dark theme (default)
-- `"light"` - Light theme
-- `"neon"` - Neon cyberpunk theme
-- `"military"` - Military theme
-
-### Practical Examples
-
-### 1. Minimal Dashboard
-
-```javascript
-const r6Info = require('r6-data.js');
-
-async function createMinimalDashboard() {
-  try {
-    const dashboardPath = await r6Info.generateDashboard({
-      email: 'your-email@example.com',
-      password: 'your-password',
-      nameOnPlatform: 'PlayerName',
-      platformType: 'uplay',
-      
-      // Only ranked stats, no extras
-      includeCharts: false,
-      includeOperatorStats: false,
-      includeMapStats: false,
-      includeCasualStats: false
-    });
-    
-    console.log('Dashboard created:', dashboardPath);
-  } catch (error) {
-    console.error('Error:', error.message);
-  }
-}
-
-createMinimalDashboard();
-```
-
-### 2. Full Dashboard with Charts
-
-```javascript
-async function createFullDashboard() {
-  try {
-    await r6Info.generateDashboard({
-      email: 'your-email@example.com',
-      password: 'your-password',
-      nameOnPlatform: 'PlayerName',
-      platformType: 'uplay',
-      
-      // Complete configuration
-      theme: 'neon',
-      outputPath: './full-dashboard.html',
-      includeCharts: true,
-      includeOperatorStats: true,
-      includeMapStats: true,
-      
-      customization: {
-        title: 'Pro Player Analytics Dashboard',
-        showTimestamp: true
-      }
-    });
-    
-    console.log('Full dashboard generated!');
-  } catch (error) {
-    console.error('Error:', error.message);
-  }
-}
-```
-
-### 3. Advanced Custom Dashboard
-
-```javascript
-async function createCustomDashboard() {
-  try {
-    await r6Info.generateDashboard({
-      email: 'your-email@example.com',
-      password: 'your-password',
-      nameOnPlatform: 'PlayerName',
-      platformType: 'uplay',
-      platform_families: 'pc',
-      
-      // Advanced configuration
-      theme: 'dark',
-      outputPath: './custom-dashboard.html',
-      includeCharts: true,
-      includeOperatorStats: false,
-      includeMapStats: false,
-      
-      customization: {
-        title: 'Rainbow Six Siege - Player Analytics',
-        logo: 'https://cdn.example.com/r6-logo.png',
-        showFooter: true,
-        showTimestamp: true,
-        hiddenStats: ['abandons'] // Hide only abandons
-      }
-    });
-    
-    console.log('Custom dashboard created successfully!');
-  } catch (error) {
-    console.error('Creation error:', error.message);
-  }
-}
-```
 
 ## Searching Across All Entities
 
