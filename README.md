@@ -3,10 +3,10 @@
 
   <div align="center">
   <p>
-    <a href="https://github.com/mazeor7/r6-data.js/releases/latest">
-  <img src="https://img.shields.io/github/v/release/mazeor7/r6-data.js?style=for-the-badge" alt="GitHub release (latest SemVer)" /></a>
-    <a href="https://github.com/mazeor7/r6-data.js/releases/latest">
-    <img src="https://img.shields.io/github/release-date/mazeor7/r6-data.js?label=latest%20release&style=for-the-badge" alt="Latest release" /></a>
+    <a href="https://github.com/mazeor9/r6-data.js/releases/latest">
+  <img src="https://img.shields.io/github/v/release/mazeor9/r6-data.js?style=for-the-badge" alt="GitHub release (latest SemVer)" /></a>
+    <a href="https://github.com/mazeor9/r6-data.js/releases/latest">
+    <img src="https://img.shields.io/github/release-date/mazeor9/r6-data.js?label=latest%20release&style=for-the-badge" alt="Latest release" /></a>
    <a href="https://www.npmjs.com/package/r6-data.js"><img src="https://img.shields.io/npm/v/r6-data.js.svg?logo=npm&style=for-the-badge" alt="npm version" /></a>
     <a href="https://www.npmjs.com/package/r6-data.js"><img src="https://img.shields.io/npm/dt/r6-data.js.svg?style=for-the-badge" alt="NPM downloads" /></a>
   </p>
