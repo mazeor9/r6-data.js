@@ -10,7 +10,7 @@ const getUniversalSkins = require('./methods/getUniversalSkins');
 const getSearchAll = require('./methods/getSearchAll');
 const getStats = require('./methods/getStats');
 
-const r6Info = {
+const r6Data = {
   getMaps,
   getOperators,
   getRanks,
@@ -24,4 +24,4 @@ const r6Info = {
   getStats,
 };
 
-module.exports = r6Info;
+module.exports = r6Data;
