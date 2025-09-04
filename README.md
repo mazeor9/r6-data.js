@@ -21,7 +21,7 @@ npm install r6-data.js
 npm i r6-data.js
 ```
 
-## Last updated Y10S3
+### Last updated Y10S3
 
 ## Getting Player Stats and Account Information
 
