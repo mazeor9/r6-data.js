@@ -23,9 +23,9 @@ npm i r6-data.js
 
 ### Last updated Y10S3
 
-## Getting Player Stats and Account Information
+## Getting Player Account Information
 
-The `getStats()` function allows you to retrieve player statistics and account information from the official Rainbow Six Siege API. This function supports two types of requests: `accountInfo` for retrieving player profile data and `stats` for retrieving gameplay statistics.
+The `getAccountInfo()` function allows you to retrieve player profile data from the official Rainbow Six Siege API. This function is specifically designed for retrieving account information such as player level, experience, clearance level, and profile settings.
 
 ```javascript
 const r6Info = require('r6-data.js');
@@ -33,37 +33,16 @@ const r6Info = require('r6-data.js');
 async function main() {
   try {
     // Get player account information
-    const accountInfo = await r6Info.getStats({
-      type: 'accountInfo',
+    const accountInfo = await r6Info.getAccountInfo({
       nameOnPlatform: 'PlayerName',
       platformType: 'uplay'
     });
     
-    return  accountInfo;
-    
-    // Get player statistics
-    const playerStats = await r6Info.getStats({
-      type: 'stats',
-      nameOnPlatform: 'PlayerName',
-      platformType: 'uplay',
-      platform_families: 'pc'
-    });
-
-    return  playerStats;
-
-    // Get player statistics for ranked mode only
-    const rankedStats = await r6Info.getStats({
-      type: 'stats',
-      nameOnPlatform: 'PlayerName',
-      platformType: 'uplay',
-      platform_families: 'pc',
-      board_id: 'ranked'
-    });
-    
-    return rankedStats;
+    console.log('Account information:', accountInfo);
+    return accountInfo;
     
   } catch (error) {
-    console.error('Error retrieving player data:', error.message);
+    console.error('Error retrieving account information:', error.message);
   }
 }
 
@@ -72,20 +51,13 @@ main();
 
 ### Parameters
 
-The `getStats()` function accepts an object with the following parameters:
-For both request types:
+The `getAccountInfo()` function accepts an object with the following parameters:
 
-- `type`: (Required) The type of request - must be either "accountInfo" or "stats"
 - `nameOnPlatform`: (Required) The player's name on the platform
 - `platformType`: (Required) The platform type - "uplay", "psn", or "xbl"
 
-Additional parameters for stats type:
-
-- `platform_families`: (Required) The platform family - "pc" or "console"
-- `board_id`: (Optional) The game mode to filter statistics - "casual", "event", "warmup", "standard", or "ranked"
-
-### Account Information
-When using the `accountInfo` type, you'll receive data about the player's profile, including:
+### Account Information Response
+When using `getAccountInfo()`, you'll receive data about the player's profile, including:
 
 - Player level and experience
 - Clearance level
@@ -93,73 +65,69 @@ When using the `accountInfo` type, you'll receive data about the player's profil
 - Play time statistics
 - Player profile settings and customization
 
-### Player Statistics
-When using the stats type, you'll receive detailed gameplay statistics, including:
+## Getting Player Statistics
 
-- Rank information
-- MMR (Matchmaking Rating)
-- Win/loss records
-- Seasonal performance data
-- Skill metrics across different gameplay modes
-
-You can filter these statistics by game mode using the `board_id` parameter:
-
-- `casual`: Statistics for casual matches
-- `event`: Statistics for limited-time events
-- `warmup`: Statistics for warmup matches
-- `standard`: Statistics for standard matches
-- `ranked`: Statistics for ranked competitive matches
-
-##  Getting Latest Siege News
-The `getLatestSiegeNews()` function allows you to retrieve the latest news and articles from Rainbow Six Siege.
+The `getPlayerStats()` function allows you to retrieve detailed gameplay statistics from the official Rainbow Six Siege API. This function is specifically designed for retrieving player performance data across different game modes.
 
 ```javascript
 const r6Info = require('r6-data.js');
 
 async function main() {
   try {
-    // Get latest Siege news
-    const siegeNews = await r6Info.getLatestSiegeNews();
-    console.log('Siege News:', siegeNews);
-    
-    // Access featured articles
-    console.log('Featured Articles:', siegeNews.featuredArticles);
-    
-    // Access latest articles
-    console.log('Latest Articles:', siegeNews.latestArticles);
-    
-    // Display individual article information
-    siegeNews.featuredArticles.forEach(article => {
-      console.log(`Title: ${article.title}`);
-      console.log(`Link: ${article.link}`);
-      console.log(`Type: ${article.type}`);
-      console.log(`Scraped at: ${article.scrapedAt}`);
-      console.log('---');
+    // Get player statistics
+    const playerStats = await r6Info.getPlayerStats({
+      nameOnPlatform: 'PlayerName',
+      platformType: 'uplay',
+      platform_families: 'pc'
+    });
+
+    console.log('Player statistics:', playerStats);
+    return playerStats;
+
+    // Get player statistics for ranked mode only
+    const rankedStats = await r6Info.getPlayerStats({
+      nameOnPlatform: 'PlayerName',
+      platformType: 'uplay',
+      platform_families: 'pc',
+      board_id: 'ranked'
     });
     
+    console.log('Ranked statistics:', rankedStats);
+    return rankedStats;
+    
   } catch (error) {
-    console.error('Error while fetching Siege news:', error.message);
+    console.error('Error retrieving player statistics:', error.message);
   }
 }
 
 main();
 ```
 
-### News Response Structure
-The function returns an object containing:
+### Parameters
 
-`featuredArticles`: Array of up to 5 featured articles from siege.gg
-`latestArticles`: Array of up to 10 latest articles from siege.gg
-`scrapedAt`: Timestamp indicating when the data was retrieved
+The `getPlayerStats()` function accepts an object with the following parameters:
 
-Each article object contains:
+- `nameOnPlatform`: (Required) The player's name on the platform
+- `platformType`: (Required) The platform type - "uplay", "psn", or "xbl"
+- `platform_families`: (Required) The platform family - "pc" or "console"
+- `board_id`: (Optional) The game mode to filter statistics - "casual", "event", "warmup", "standard", or "ranked"
 
-`title`: The article title (cleaned from "Siege" suffix)
-`imageUrl`: URL of the article's featured image
-`link`: Full URL to the article
-`type`: Article type ("featured" or "latest")
-`category`: Article category (for latest articles: "news" or "general")
-`scrapedAt`: Timestamp of when the article was scraped
+### Player Statistics Response
+  When using `getPlayerStats()`, you'll receive detailed gameplay statistics, including:
+
+  - Rank information
+  - MMR (Matchmaking Rating)
+  - Win/loss records
+  - Seasonal performance data
+  - Skill metrics across different gameplay modes
+
+  You can filter these statistics by game mode using the `board_id` parameter:
+
+  - `casual`: Statistics for casual matches
+  - `event`: Statistics for limited-time events
+  - `warmup`: Statistics for warmup matches
+  - `standard`: Statistics for standard matches
+  - `ranked`: Statistics for ranked competitive matches
 
 ## Searching Across All Entities
 
