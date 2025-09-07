@@ -110,6 +110,57 @@ You can filter these statistics by game mode using the `board_id` parameter:
 - `standard`: Statistics for standard matches
 - `ranked`: Statistics for ranked competitive matches
 
+##  Getting Latest Siege News
+The `getLatestSiegeNews()` function allows you to retrieve the latest news and articles from Rainbow Six Siege.
+
+```javascript
+const r6Info = require('r6-data.js');
+
+async function main() {
+  try {
+    // Get latest Siege news
+    const siegeNews = await r6Info.getLatestSiegeNews();
+    console.log('Siege News:', siegeNews);
+    
+    // Access featured articles
+    console.log('Featured Articles:', siegeNews.featuredArticles);
+    
+    // Access latest articles
+    console.log('Latest Articles:', siegeNews.latestArticles);
+    
+    // Display individual article information
+    siegeNews.featuredArticles.forEach(article => {
+      console.log(`Title: ${article.title}`);
+      console.log(`Link: ${article.link}`);
+      console.log(`Type: ${article.type}`);
+      console.log(`Scraped at: ${article.scrapedAt}`);
+      console.log('---');
+    });
+    
+  } catch (error) {
+    console.error('Error while fetching Siege news:', error.message);
+  }
+}
+
+main();
+```
+
+### News Response Structure
+The function returns an object containing:
+
+`featuredArticles`: Array of up to 5 featured articles from siege.gg
+`latestArticles`: Array of up to 10 latest articles from siege.gg
+`scrapedAt`: Timestamp indicating when the data was retrieved
+
+Each article object contains:
+
+`title`: The article title (cleaned from "Siege" suffix)
+`imageUrl`: URL of the article's featured image
+`link`: Full URL to the article
+`type`: Article type ("featured" or "latest")
+`category`: Article category (for latest articles: "news" or "general")
+`scrapedAt`: Timestamp of when the article was scraped
+
 ## Searching Across All Entities
 
 The `getSearchAll()` function allows you to search across all Rainbow Six Siege entities (operators, weapons, maps, seasons, charms, and attachments) with a single query. This is useful for finding relevant information across multiple categories at once.

@@ -9,6 +9,7 @@ const getWeapons = require('./methods/getWeapons');
 const getUniversalSkins = require('./methods/getUniversalSkins');
 const getSearchAll = require('./methods/getSearchAll');
 const getStats = require('./methods/getStats');
+const getLatestSiegeNews = require('./methods/getLatestSiegeNews');
 
 const r6Data = {
   getMaps,
@@ -22,6 +23,7 @@ const r6Data = {
   getUniversalSkins,
   getSearchAll,
   getStats,
+  getLatestSiegeNews,
 };
 
 module.exports = r6Data;
