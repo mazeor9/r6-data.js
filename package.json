@@ -1,6 +1,6 @@
 {
   "name": "r6-data.js",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Rainbow Six Siege API wrapper that gives infos about player's stats, maps, operators, ranks, seasons, charms etc. Last updated Y10S3",
   "main": "index.js",
   "scripts": {
