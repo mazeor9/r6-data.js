@@ -1,7 +1,7 @@
 {
   "name": "r6-data.js",
-  "version": "1.1.0",
-  "description": "A wrapper for Rainbow Six Siege API that gives you information about player's stats, maps, operators, ranks, seasons, charms etc",
+  "version": "1.2.0",
+  "description": "Rainbow Six Siege API wrapper that gives infos about player's stats, maps, operators, ranks, seasons, charms etc. Last updated Y10S3",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -1,5 +1,5 @@
 ## r6-data.js
-  A wrapper for the R6Siege API that gives you information about player's stats, maps, operators, ranks, seasons, charms etc.
+  Rainbow Six Siege API wrapper that gives infos about player's stats, maps, operators, ranks, seasons, charms etc. Last updated Y10S3
 
   <div align="center">
   <p>
@@ -20,8 +20,6 @@ npm install r6-data.js
 ```sh
 npm i r6-data.js
 ```
-
-### Last updated Y10S3
 
 ## Getting Player Account Information
 
