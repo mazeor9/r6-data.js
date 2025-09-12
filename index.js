@@ -10,6 +10,7 @@ const getUniversalSkins = require('./methods/getUniversalSkins');
 const getSearchAll = require('./methods/getSearchAll');
 const getAccountInfo = require('./methods/getAccountInfo');
 const getPlayerStats = require('./methods/getPlayerStats');
+const createDiscordR6Webhook = require('./methods/createDiscordR6Webhook');
 
 const r6Data = {
   getMaps,
@@ -24,6 +25,7 @@ const r6Data = {
   getSearchAll,
   getAccountInfo,
   getPlayerStats,
+  createDiscordR6Webhook,
 };
 
 module.exports = r6Data;

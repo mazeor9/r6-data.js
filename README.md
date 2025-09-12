@@ -111,21 +111,87 @@ The `getPlayerStats()` function accepts an object with the following parameters:
 - `board_id`: (Optional) The game mode to filter statistics - "casual", "event", "warmup", "standard", or "ranked"
 
 ### Player Statistics Response
-  When using `getPlayerStats()`, you'll receive detailed gameplay statistics, including:
+When using `getPlayerStats()`, you'll receive detailed gameplay statistics, including:
 
-  - Rank information
-  - MMR (Matchmaking Rating)
-  - Win/loss records
-  - Seasonal performance data
-  - Skill metrics across different gameplay modes
+- Rank information
+- MMR (Matchmaking Rating)
+- Win/loss records
+- Seasonal performance data
+- Skill metrics across different gameplay modes
 
-  You can filter these statistics by game mode using the `board_id` parameter:
+You can filter these statistics by game mode using the `board_id` parameter:
 
-  - `casual`: Statistics for casual matches
-  - `event`: Statistics for limited-time events
-  - `warmup`: Statistics for warmup matches
-  - `standard`: Statistics for standard matches
-  - `ranked`: Statistics for ranked competitive matches
+- `casual`: Statistics for casual matches
+- `event`: Statistics for limited-time events
+- `warmup`: Statistics for warmup matches
+- `standard`: Statistics for standard matches
+- `ranked`: Statistics for ranked competitive matches
+
+## Creating Discord Webhooks for R6 Stats
+
+The `createDiscordR6Webhook()` function allows you to send Rainbow Six Siege player statistics directly to a Discord channel using webhooks. This creates formatted embeds with player stats that can be customized with various options.
+
+```javascript
+const r6Info = require('r6-data.js');
+
+async function main() {
+  try {
+    // First, get player statistics
+    const playerStats = await r6Info.getPlayerStats({
+      nameOnPlatform: 'PlayerName',
+      platformType: 'uplay',
+      platform_families: 'pc'
+    });
+
+    // Send stats to Discord webhook
+    const webhookResult = await r6Info.createDiscordR6Webhook(
+      'https://discord.com/api/webhooks/YOUR_WEBHOOK_ID/YOUR_WEBHOOK_TOKEN',
+      playerStats,
+      {
+        playerName: 'PlayerName',
+        title: 'Rainbow Six Siege Stats',
+        message: 'Here are the latest R6 stats!',
+        color: 0xF99E1A, // Orange color
+        avatarUrl: 'https://example.com/avatar.png'
+      }
+    );
+
+    console.log('Webhook sent successfully:', webhookResult);
+    
+  } catch (error) {
+    console.error('Error sending webhook:', error.message);
+  }
+}
+
+main();
+```
+
+### Parameters
+The `createDiscordR6Webhook()` function accepts the following parameters:
+- `webhookUrl`: (Required) The Discord webhook URL
+- `playerData`: (Required) Player statistics data from getPlayerStats() or getAccountInfo()
+- `options`: (Required) Configuration object with the following properties:
+  - `playerName`: (Required) The player's name to display
+  - `title`: (Optional) Custom title for the embed (default: "Rainbow Six Siege Stats")
+  - `message`: (Optional) Custom message content above the embed
+  - `color`: (Optional) Embed color in hexadecimal format (default: 0xF99E1A)
+  - `avatarUrl`: (Optional) URL for the player's avatar thumbnail
+
+###  Supported Data Formats
+The function automatically detects and formats different data sources:
+
+`Ubisoft API data`: From getPlayerStats() - displays ranked/standard statistics
+`Steam data`: Custom Steam-formatted statistics
+`Custom data`: Any custom statistics object
+
+### Discord Webhook Setup
+To use this function, you need to create a webhook in your Discord server:
+
+1. Go to your Discord server settings
+2. Navigate to Integrations → Webhooks
+3. Click "New Webhook"
+4. Copy the webhook URL
+5. Use this URL in the `createDiscordR6Webhook()` function
 
 ## Searching Across All Entities
 
