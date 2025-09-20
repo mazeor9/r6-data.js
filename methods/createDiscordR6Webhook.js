@@ -207,8 +207,9 @@ function getRankName(rankNumber) {
     11: 'Silver V', 12: 'Silver IV', 13: 'Silver III', 14: 'Silver II', 15: 'Silver I',
     16: 'Gold V', 17: 'Gold IV', 18: 'Gold III', 19: 'Gold II', 20: 'Gold I',
     21: 'Platinum V', 22: 'Platinum IV', 23: 'Platinum III', 24: 'Platinum II', 25: 'Platinum I',
-    26: 'Diamond V', 27: 'Diamond IV', 28: 'Diamond III', 29: 'Diamond II', 30: 'Diamond I',
-    31: 'Champion'
+    26: 'Emerald V', 27: 'Emerald IV', 28: 'Emerald III', 29: 'Emerald II', 30: 'Emerald I',
+    31: 'Diamond V', 32: 'Diamond IV', 33: 'Diamond III', 34: 'Diamond II', 35: 'Diamond I',
+    36: 'Champion'
   };
   
   return ranks[rankNumber] || 'Unknown Rank';
