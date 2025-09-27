@@ -21,6 +21,12 @@ npm install r6-data.js
 npm i r6-data.js
 ```
 
+## R6Data Website for stats and API
+
+This is the website where you can directly track your stats and also check the all infos that gives r6-data.js. Entire website is based on r6-data.js.
+
+Visit the official website: **[r6data.eu](https://r6data.eu/)**
+
 ## Getting Player Account Information
 
 The `getAccountInfo()` function allows you to retrieve player profile data from the official Rainbow Six Siege API. This function is specifically designed for retrieving account information such as player level, experience, clearance level, and profile settings.
