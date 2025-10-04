@@ -4,7 +4,7 @@
   "description": "Rainbow Six Siege API wrapper for player's stats, maps, operators, ranks, seasons, charms etc. Last updated Y10S3",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": ""
   },
   "repository": {
     "type": "git",
@@ -44,10 +44,14 @@
     "rainbow",
     "r6 info",
     "r6-info",
-    "R6 info"
+    "R6 info",
+    "siege stats",
+    "siege tracker",
+    "siege x tracker",
+    "siege x stats"
   ],
   "author": "mazeor",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "axios": "^1.12.2",
     "ms": "^2.1.3"
