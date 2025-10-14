@@ -435,6 +435,8 @@ main();
 7. Filtering operators by date of birth using the `date_of_birth` parameter.
 8. Filtering operators by season introduced using the `season_introduced` parameter.
 
+You can get the operator url icon via getOperators, is in the json response.
+
 ## Getting Season Information
 
 The `getSeasons()` function allows you to retrieve information about the seasons in Rainbow Six Siege. You can get a list of all seasons or filter the seasons based on specific criteria. Here's an example of how to use the `getSeasons()` function:
