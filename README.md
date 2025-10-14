@@ -435,7 +435,7 @@ main();
 7. Filtering operators by date of birth using the `date_of_birth` parameter.
 8. Filtering operators by season introduced using the `season_introduced` parameter.
 
-You can get the operator url icon via getOperators, is in the json response.
+You can get the operator url icon via r6Info.getOperators(), is in the json response.
 
 ## Getting Season Information
 
