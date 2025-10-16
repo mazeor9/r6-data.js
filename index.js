@@ -11,6 +11,8 @@ const getSearchAll = require('./methods/getSearchAll');
 const getAccountInfo = require('./methods/getAccountInfo');
 const getPlayerStats = require('./methods/getPlayerStats');
 const createDiscordR6Webhook = require('./methods/createDiscordR6Webhook');
+const getGameStats = require('./methods/getGameStats');
+const getSeasonalStats = require('./methods/getSeasonalStats');
 
 const r6Data = {
   getMaps,
@@ -26,6 +28,8 @@ const r6Data = {
   getAccountInfo,
   getPlayerStats,
   createDiscordR6Webhook,
+  getGameStats,
+  getSeasonalStats,
 };
 
 module.exports = r6Data;

@@ -133,6 +133,135 @@ You can filter these statistics by game mode using the `board_id` parameter:
 - `standard`: Statistics for standard matches
 - `ranked`: Statistics for ranked competitive matches
 
+
+## Getting Seasonal Statistics
+
+The `getSeasonalStats()` function allows you to get detailed rank points history and seasonal progression for a specific player in the current season. Includes timestamp, rank information, RP values, and rank images
+
+```javascript
+const r6Info = require('r6-data.js');
+
+async function main() {
+  try {
+    // Get seasonal statistics for a player
+    const seasonalStats = await r6Info.getSeasonalStats({
+      nameOnPlatform: 'PlayerName',
+      platformType: 'uplay'
+    });
+
+    console.log('Seasonal statistics:', seasonalStats);
+    return seasonalStats;
+    
+  } catch (error) {
+    console.error('Error retrieving seasonal statistics:', error.message);
+  }
+}
+
+main();
+```
+
+### Parameters
+
+The `getSeasonalStats()` function accepts an object with the following parameters:
+
+- `nameOnPlatform`: (Required) The player's name on the platform
+- `platformType`: (Required) The platform type - "uplay", "psn", or "xbl"
+
+### Seasonal Statistics Response
+
+```javascript
+          {
+            "data": {
+                "history": {
+                "metadata": {
+                    "key": "RankPoints",
+                    "name": "Rank Points",
+                    "description": null
+                },
+                "data": [
+                    [
+                    "2025-10-14T21:43:27.315+00:00",
+                    {
+                        "displayName": "Rank Points",
+                        "metadata": {
+                        "rank": "PLATINUM II",
+                        "imageUrl": "https://r6data.eu/assets/img/r6_ranks_img/platinum-2.webp",
+                        "color": "#44ccc2"
+                        },
+                            "value": 3300,
+                            "displayValue": "3,300",
+                            "displayType": "Number"
+                        }
+                    ],
+                    [
+                    "2025-10-14T21:12:55.821+00:00",
+                    {
+                        "displayName": "Rank Points",
+                        "metadata": {
+                        "rank": "PLATINUM II",
+                        "imageUrl": "https://r6data.eu/assets/img/r6_ranks_img/platinum-2.webp",
+                        "color": "#44ccc2"
+                        },
+                            "value": 3302,
+                            "displayValue": "3,302",
+                            "displayType": "Number"
+                        }
+                    ]
+                ]
+                },
+                "leaderboard": null,
+                "expiryDate": "0001-01-01T00:00:00+00:00",
+                "bestMatches": null
+            }
+```
+
+## Getting Game Statistics
+
+The `getGameStats()` function allows you to get real-time player count statistics across all platforms including Steam, Ubisoft Connect, PlayStation, Xbox, and total player counts
+
+```javascript
+const r6Info = require('r6-data.js');
+
+async function main() {
+  try {
+    // Get general game statistics
+    const gameStats = await r6Info.getGameStats();
+
+    console.log('Game statistics:', gameStats);
+    return gameStats;
+    
+  } catch (error) {
+    console.error('Error retrieving game statistics:', error.message);
+  }
+}
+
+main();
+```
+
+### Game Statistics Response
+```javascript
+          {
+            "steam": {
+                "concurrent": 33631,
+                "estimate": 33631
+            },
+            "crossPlatform": {
+                "totalRegistered": 85000000,
+                "monthlyActive": 15300000,
+                "trendsEstimate": 175666,
+                "platforms": {
+                    "pc": 6885000,
+                    "playstation": 5355000,
+                    "xbox": 3060000
+                }
+            },
+            "ubisoft": {
+                "onlineEstimate": 127739
+            },
+            "lastUpdated": "2025-10-15T22:39:38.636Z"
+          }
+```
+
 ## Creating Discord Webhooks for R6 Stats
 
 The `createDiscordR6Webhook()` function allows you to send Rainbow Six Siege player statistics directly to a Discord channel using webhooks. This creates formatted embeds with player stats that can be customized with various options.
