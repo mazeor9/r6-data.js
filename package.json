@@ -3,13 +3,35 @@
   "version": "1.4.0",
   "description": "Rainbow Six Siege API wrapper for player's stats, maps, operators, ranks, seasons, charms etc. Last updated Y10S3",
   "main": "index.js",
+  "exports": {
+    ".": {
+      "require": "./index.js",
+      "default": "./index.js"
+    }
+  },
+  "types": "./index.d.ts",
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "tsconfig.json",
+    "methods/",
+    "axiosInstance/",
+    "README.md"
+  ],
   "scripts": {
-    "test": ""
+    "test": "node -e \"console.log('no tests yet')\"",
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mazeor9/r6-data.js"
   },
+  "homepage": "https://r6data.eu/",
+  "bugs": {
+    "url": "https://github.com/mazeor9/r6-data.js/issues"
+  },
+  "funding": "https://buymeacoffee.com/mazeor",
   "keywords": [
     "r6",
     "rainbow six",
@@ -63,6 +85,8 @@
     "ms": "^2.1.3"
   },
   "devDependencies": {
-    "@types/node": "^24.4.0"
+    "@types/node": "^24.8.0",
+    "eslint": "^9.37.0",
+    "typescript": "^5.9.3"
   }
 }

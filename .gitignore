@@ -1,4 +1,5 @@
 node_modules/
-.gitignore
 test.js
+test.ts
+dist/
 .npmignore

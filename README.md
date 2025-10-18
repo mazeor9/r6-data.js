@@ -1,4 +1,5 @@
-## r6-data.js
+# r6-data.js — Rainbow Six Siege (R6/R6S) Stats & Metadata API
+
   Rainbow Six Siege API wrapper that gives infos about player's stats, maps, operators, ranks, seasons, charms etc. Last updated Y10S3
 
   <div align="center">
@@ -15,9 +16,6 @@
 ## Installation
 
 ```sh
-npm install r6-data.js
-```
-```sh
 npm i r6-data.js
 ```
 
@@ -26,6 +24,51 @@ npm i r6-data.js
 This is the website where you can directly track your stats and also check the all infos that gives r6-data.js. Entire website is based on r6-data.js.
 
 Visit the official website: **[r6data.eu](https://r6data.eu/)**
+
+## TypeScript Support
+
+r6-data.js now includes full TypeScript support with complete type definitions! You can use it in TypeScript projects with full IntelliSense and type checking.
+
+### TypeScript Import Examples
+
+```typescript
+// ES6 import syntax
+import * as r6 from 'r6-data.js';
+
+// Or import specific functions
+import { getAccountInfo, getPlayerStats, getOperators } from 'r6-data.js';
+
+// Import types for better type safety
+import type { AccountInfoParams, PlayerStatsParams, PlatformType } from 'r6-data.js';
+
+// Example usage with types
+async function getPlayerData() {
+  const accountParams: AccountInfoParams = {
+    nameOnPlatform: 'PlayerName',
+    platformType: 'uplay' as PlatformType
+  };
+  
+  const accountInfo = await r6.getAccountInfo(accountParams);
+  console.log('Account info:', accountInfo);
+}
+```
+
+### JavaScript (CommonJS) Import
+
+```javascript
+// Traditional require syntax (still supported)
+const r6 = require('r6-data.js');
+
+// Example usage
+async function getPlayerData() {
+  const accountInfo = await r6.getAccountInfo({
+    nameOnPlatform: 'PlayerName',
+    platformType: 'uplay'
+  });
+  
+  console.log('Account info:', accountInfo);
+}
+```
 
 ## Getting Player Account Information
 
