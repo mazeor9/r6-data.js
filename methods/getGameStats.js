@@ -1,4 +1,5 @@
 const axiosInstance = require('../axiosInstance/axiosInstance');
+const buildUrlAndParams = require('./util');
 
 /**
  * Get Rainbow Six Siege game stats for all platform
