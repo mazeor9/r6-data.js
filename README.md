@@ -1,3 +1,7 @@
+⚠️ **DEPRECATED**  
+> This package has been closed and is no longer maintained.  
+> A new package has been created: [r6-db](https://www.npmjs.com/package/r6-db)
+
 # r6-data.js — Complete R6 Rainbow Six Siege API Wrapper
 
 **Rainbow Six Siege (R6) API wrapper for Node.js** - Get player stats, operators, maps, ranks, seasons, charms and more. Full TypeScript support included. Last updated Y10S3
