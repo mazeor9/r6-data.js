@@ -31,47 +31,30 @@ Visit the official website: **[r6data.eu](https://r6data.eu/)**
 
 ## TypeScript Support
 
-r6-data.js now includes full TypeScript support with complete type definitions! You can use it in TypeScript projects with full IntelliSense and type checking.
-
-### TypeScript Import Examples
+Full TypeScript support with complete type definitions and IntelliSense.
 
 ```typescript
-// ES6 import syntax
+// ES6 imports
 import * as r6 from 'r6-data.js';
+import { getAccountInfo, AccountInfoParams, PlatformType } from 'r6-data.js';
 
-// Or import specific functions
-import { getAccountInfo, getPlayerStats, getOperators } from 'r6-data.js';
+// Usage with types
+const params: AccountInfoParams = {
+  nameOnPlatform: 'PlayerName',
+  platformType: 'uplay' as PlatformType
+};
 
-// Import types for better type safety
-import type { AccountInfoParams, PlayerStatsParams, PlatformType } from 'r6-data.js';
-
-// Example usage with types
-async function getPlayerData() {
-  const accountParams: AccountInfoParams = {
-    nameOnPlatform: 'PlayerName',
-    platformType: 'uplay' as PlatformType
-  };
-  
-  const accountInfo = await r6.getAccountInfo(accountParams);
-  console.log('Account info:', accountInfo);
-}
+const accountInfo = await r6.getAccountInfo(params);
 ```
 
-### JavaScript (CommonJS) Import
-
 ```javascript
-// Traditional require syntax (still supported)
+// CommonJS (still supported)
 const r6 = require('r6-data.js');
 
-// Example usage
-async function getPlayerData() {
-  const accountInfo = await r6.getAccountInfo({
-    nameOnPlatform: 'PlayerName',
-    platformType: 'uplay'
-  });
-  
-  console.log('Account info:', accountInfo);
-}
+const accountInfo = await r6.getAccountInfo({
+  nameOnPlatform: 'PlayerName',
+  platformType: 'uplay'
+});
 ```
 
 ## Getting Player Account Information

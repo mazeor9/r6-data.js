@@ -14,7 +14,8 @@ const createDiscordR6Webhook = require('./methods/createDiscordR6Webhook');
 const getGameStats = require('./methods/getGameStats');
 const getSeasonalStats = require('./methods/getSeasonalStats');
 
-const r6Data = {
+// Export individual functions for named imports
+module.exports = {
   getMaps,
   getOperators,
   getRanks,
@@ -32,4 +33,19 @@ const r6Data = {
   getSeasonalStats,
 };
 
-module.exports = r6Data;
+// Export individual functions as named exports for ES6 compatibility
+module.exports.getMaps = getMaps;
+module.exports.getOperators = getOperators;
+module.exports.getRanks = getRanks;
+module.exports.getSeasons = getSeasons;
+module.exports.getServiceStatus = getServiceStatus;
+module.exports.getAttachment = getAttachment;
+module.exports.getCharms = getCharms;
+module.exports.getWeapons = getWeapons;
+module.exports.getUniversalSkins = getUniversalSkins;
+module.exports.getSearchAll = getSearchAll;
+module.exports.getAccountInfo = getAccountInfo;
+module.exports.getPlayerStats = getPlayerStats;
+module.exports.createDiscordR6Webhook = createDiscordR6Webhook;
+module.exports.getGameStats = getGameStats;
+module.exports.getSeasonalStats = getSeasonalStats;
