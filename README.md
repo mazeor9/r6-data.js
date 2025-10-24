@@ -288,6 +288,46 @@ main();
           }
 ```
 
+## Comparing Player Statistics
+
+The `getPlayerComparisons()` function compares Rainbow Six Siege statistics between multiple players, providing rankings and comparison metrics.
+
+```javascript
+const r6Info = require('r6-data.js');
+
+async function main() {
+  try {
+    const comparison = await r6Info.getPlayerComparisons({
+      players: [
+        { nameOnPlatform: 'Player1', platformType: 'uplay' },
+        { nameOnPlatform: 'Player2', platformType: 'uplay' }
+      ],
+      platform_families: 'pc',
+      board_id: 'ranked', // Optional
+      compareFields: ['kills', 'deaths', 'wins', 'losses'] // Optional
+    });
+
+    console.log('Comparison results:', comparison.comparison_summary.field_comparisons);
+    
+  } catch (error) {
+    console.error('Error during comparison:', error.message);
+  }
+}
+
+main();
+```
+
+### Parameters
+
+- `players`: (Required) Array of player objects with `nameOnPlatform` and `platformType`
+- `platform_families`: (Required) "pc" or "console"
+- `board_id`: (Optional) Game mode filter - "casual", "ranked", etc.
+- `compareFields`: (Optional) Specific stats to compare (default: kills, deaths, wins, losses, etc.)
+
+### Response
+
+Returns comparison data with player stats, field rankings (highest/lowest/average), and metadata including success/failure counts.
+
 ## Creating Discord Webhooks for R6 Stats
 
 The `createDiscordR6Webhook()` function allows you to send Rainbow Six Siege player statistics directly to a Discord channel using webhooks. This creates formatted embeds with player stats that can be customized with various options.

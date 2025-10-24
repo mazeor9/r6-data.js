@@ -16,6 +16,16 @@ export interface PlayerStatsParams extends AccountInfoParams {
 }
 export interface SeasonalStatsParams extends AccountInfoParams {}
 
+export interface PlayerComparisonsParams {
+  players: Array<{
+    nameOnPlatform: string;
+    platformType: PlatformType;
+  }>;
+  platform_families: PlatformFamily;
+  board_id?: BoardId;
+  compareFields?: string[];
+}
+
 export interface GetMapsParams {
   name?: string; location?: string; releaseDate?: string; playlists?: string; mapReworked?: boolean;
 }
@@ -54,7 +64,55 @@ export interface DiscordWebhookOptions {
   playerName: string; title?: string; message?: string; color?: number; avatarUrl?: string;
 }
 
-// ----- Functions -----
+export interface PlayerComparisonsResult {
+  players: Array<{
+    player: {
+      nameOnPlatform: string;
+      platformType: PlatformType;
+    };
+    stats: any;
+    success: boolean;
+    error?: string;
+  }>;
+  comparison_summary: {
+    field_comparisons: Record<string, {
+      rankings: Array<{
+        player: string;
+        value: number;
+        platform: PlatformType;
+      }>;
+      highest: {
+        player: string;
+        value: number;
+        platform: PlatformType;
+      };
+      lowest: {
+        player: string;
+        value: number;
+        platform: PlatformType;
+      };
+      average: number;
+    }>;
+    rankings: Record<string, any>;
+  };
+  metadata: {
+    total_players: number;
+    successful_fetches: number;
+    failed_fetches: number;
+    platform_families: PlatformFamily;
+    board_id: string;
+    timestamp: string;
+  };
+  errors?: Array<{
+    player: {
+      nameOnPlatform: string;
+      platformType: PlatformType;
+    };
+    error: string;
+  }>;
+}
+
+// ----- Function declarations -----
 export function getAccountInfo(params: AccountInfoParams): Promise<any>;
 export function getPlayerStats(params: PlayerStatsParams): Promise<any>;
 export function getSeasonalStats(params: SeasonalStatsParams): Promise<any>;
@@ -70,6 +128,7 @@ export function getUniversalSkins(params?: GetUniversalSkinsParams): Promise<any
 export function getRanks(params?: GetRanksParams): Promise<any[]>;
 export function getSearchAll(query: string): Promise<SearchAllResult>;
 export function createDiscordR6Webhook(webhookUrl: string, playerData: any, options: DiscordWebhookOptions): Promise<any>;
+export function getPlayerComparisons(params: PlayerComparisonsParams): Promise<PlayerComparisonsResult>;
 
 // ----- Default export -----
 declare const r6Data: {
@@ -88,5 +147,6 @@ declare const r6Data: {
   getRanks: typeof getRanks;
   getSearchAll: typeof getSearchAll;
   createDiscordR6Webhook: typeof createDiscordR6Webhook;
+  getPlayerComparisons: typeof getPlayerComparisons;
 };
 export default r6Data;

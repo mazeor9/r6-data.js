@@ -13,6 +13,7 @@ const getPlayerStats = require('./methods/getPlayerStats');
 const createDiscordR6Webhook = require('./methods/createDiscordR6Webhook');
 const getGameStats = require('./methods/getGameStats');
 const getSeasonalStats = require('./methods/getSeasonalStats');
+const getPlayerComparisons = require('./methods/getPlayerComparisons');
 
 // Export individual functions for named imports
 module.exports = {
@@ -31,6 +32,7 @@ module.exports = {
   createDiscordR6Webhook,
   getGameStats,
   getSeasonalStats,
+  getPlayerComparisons,
 };
 
 // Export individual functions as named exports for ES6 compatibility
@@ -49,3 +51,4 @@ module.exports.getPlayerStats = getPlayerStats;
 module.exports.createDiscordR6Webhook = createDiscordR6Webhook;
 module.exports.getGameStats = getGameStats;
 module.exports.getSeasonalStats = getSeasonalStats;
+module.exports.getPlayerComparisons = getPlayerComparisons;
