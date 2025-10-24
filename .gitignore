@@ -3,4 +3,3 @@ test.js
 test.ts
 dist/
 .npmignore
-methods/tokenManager.js
