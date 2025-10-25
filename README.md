@@ -21,7 +21,7 @@ npm i r6-data.js
 
 ## R6Data Website for stats and API
 
-This is the website where you can directly track your stats and also check the all infos that gives r6-data.js. Entire website is based on r6-data.js.
+Website where you can directly track your stats and also check the all infos that gives r6-data.js. Entire website is based on r6-data.js.
 
 Visit the official website: **[r6data.eu](https://r6data.eu/)**
 
