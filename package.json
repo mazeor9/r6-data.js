@@ -50,7 +50,8 @@
     "r6-tracker",
     "operators",
     "maps",
-    "ranks"
+    "ranks",
+    "r6s stats"
   ],
   "author": "mazeor",
   "license": "MIT",
