@@ -19,6 +19,7 @@
     "tsconfig.json",
     "methods/",
     "axiosInstance/",
+    "types/",
     "README.md"
   ],
   "scripts": {
