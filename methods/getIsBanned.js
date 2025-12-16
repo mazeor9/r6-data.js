@@ -17,11 +17,12 @@ async function getIsBanned({ nameOnPlatform, platformType } = {}) {
 
     // Build the URL with parameters
     const params = {
+      type: 'isBanned',
       nameOnPlatform,
       platformType
     };
 
-    const url = buildUrlAndParams('/isbanned', params);
+    const url = buildUrlAndParams('/stats', params);
 
     const response = await axiosInstance.get(url);
     
