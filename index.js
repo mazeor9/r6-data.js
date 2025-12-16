@@ -14,6 +14,7 @@ const createDiscordR6Webhook = require('./methods/createDiscordR6Webhook');
 const getGameStats = require('./methods/getGameStats');
 const getSeasonalStats = require('./methods/getSeasonalStats');
 const getPlayerComparisons = require('./methods/getPlayerComparisons');
+const getIsBanned = require('./methods/getIsBanned');
 
 // Export individual functions for named imports
 module.exports = {
@@ -33,6 +34,7 @@ module.exports = {
   getGameStats,
   getSeasonalStats,
   getPlayerComparisons,
+  getIsBanned,
 };
 
 // Export individual functions as named exports for ES6 compatibility
@@ -52,3 +54,4 @@ module.exports.createDiscordR6Webhook = createDiscordR6Webhook;
 module.exports.getGameStats = getGameStats;
 module.exports.getSeasonalStats = getSeasonalStats;
 module.exports.getPlayerComparisons = getPlayerComparisons;
+module.exports.getIsBanned = getIsBanned;

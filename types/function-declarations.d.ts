@@ -2,6 +2,7 @@
 
 import {
   AccountInfoParams,
+  GetIsBannedParams,
   PlayerStatsParams,
   SeasonalStatsParams,
   PlayerComparisonsParams,
@@ -23,6 +24,7 @@ import {
 } from './result-interfaces';
 
 export function getAccountInfo(params: AccountInfoParams): Promise<any>;
+export function getIsBanned(params: GetIsBannedParams): Promise<any>;
 export function getPlayerStats(params: PlayerStatsParams): Promise<any>;
 export function getSeasonalStats(params: SeasonalStatsParams): Promise<any>;
 export function getServiceStatus(): Promise<any>;

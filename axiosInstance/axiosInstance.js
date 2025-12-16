@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const axiosInstance = axios.create({
-    baseURL: 'https://r6-api.vercel.app/api',
+    baseURL: 'https://api.r6data.eu/api',
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',

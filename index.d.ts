@@ -1,4 +1,4 @@
-// TypeScript declarations for r6-data.js (module-style, no ambient wrapper)
+// TypeScript declarations for r6-data.js
 
 // Re-export all types and interfaces from modular files
 export * from './types';
@@ -6,6 +6,7 @@ export * from './types';
 // ----- Default export -----
 import {
   getAccountInfo,
+  getIsBanned,
   getPlayerStats,
   getSeasonalStats,
   getServiceStatus,
@@ -25,6 +26,7 @@ import {
 
 declare const r6Data: {
   getAccountInfo: typeof getAccountInfo;
+  getIsBanned: typeof getIsBanned;
   getPlayerStats: typeof getPlayerStats;
   getSeasonalStats: typeof getSeasonalStats;
   getServiceStatus: typeof getServiceStatus;

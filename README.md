@@ -95,6 +95,42 @@ When using `getAccountInfo()`, you'll receive data about the player's profile, i
 - Play time statistics
 - Player profile settings and customization
 
+## Getting Player Ban Status
+
+The `getIsBanned()` function allows you to check if a player is currently banned from Rainbow Six Siege.
+
+```javascript
+const r6Info = require('r6-data.js');
+
+async function main() {
+  try {
+    // Check if player is banned
+    const banStatus = await r6Info.getIsBanned({
+      nameOnPlatform: 'PlayerName',
+      platformType: 'uplay'
+    });
+    
+    console.log('Ban status:', banStatus);
+    return banStatus;
+    
+  } catch (error) {
+    console.error('Error checking ban status:', error.message);
+  }
+}
+
+main();
+```
+
+### Parameters
+
+The `getIsBanned()` function accepts an object with the following parameters:
+
+- `nameOnPlatform`: (Required) The player's name on the platform
+- `platformType`: (Required) The platform type - "uplay", "psn", or "xbl"
+
+### Ban Status Response
+When using `getIsBanned()`, you'll receive data indicating the player's ban status.
+
 ## Getting Player Statistics
 
 The `getPlayerStats()` function allows you to retrieve detailed gameplay statistics from the official Rainbow Six Siege API. This function is specifically designed for retrieving player performance data across different game modes.

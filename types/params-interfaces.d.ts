@@ -7,6 +7,8 @@ export interface AccountInfoParams {
   platformType: PlatformType;
 }
 
+export interface GetIsBannedParams extends AccountInfoParams {}
+
 export interface PlayerStatsParams extends AccountInfoParams {
   platform_families: PlatformFamily;
   board_id?: BoardId;
