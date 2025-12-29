@@ -3,6 +3,7 @@ const buildUrlAndParams = require('./util');
 
 /**
  * Get Rainbow Six Siege player stats or account information
+ * @param {string} apiKey - Your API Key from r6data.eu
  * @param {Object} params - Parameters for the request
  * @param {string} params.type - Type of request: "accountInfo" or "stats"
  * @param {string} params.nameOnPlatform - Player name on the platform
@@ -11,9 +12,12 @@ const buildUrlAndParams = require('./util');
  * @param {string} [params.board_id] - Game mode to filter stats (casual, event, warmup, standard, ranked)
  * @returns {Promise<Object>} - Player stats or account information
  */
-async function getStats({ type, nameOnPlatform, platformType, platform_families, board_id } = {}) {
+async function getStats(apiKey, { type, nameOnPlatform, platformType, platform_families, board_id } = {}) {
   try {
     // Validate required parameters
+    if (!apiKey) {
+      throw new Error('Missing required parameter: apiKey');
+    }
     if (!type || !nameOnPlatform || !platformType) {
       throw new Error('Missing required parameters: type, nameOnPlatform, platformType');
     }
@@ -52,7 +56,11 @@ async function getStats({ type, nameOnPlatform, platformType, platform_families,
 
     const url = buildUrlAndParams('/stats', params);
 
-    const response = await axiosInstance.get(url);
+    const response = await axiosInstance.get(url, {
+      headers: {
+        'api-key': apiKey
+      }
+    });
     
     if (response.data && 
         response.data.platform_families_full_profiles && 

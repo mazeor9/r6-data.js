@@ -3,10 +3,14 @@ const buildUrlAndParams = require('./util');
 
 /**
  * Get Rainbow Six Siege game stats for all platform
+ * @param {string} apiKey - Your API Key from r6data.eu
  * @returns {Promise<Object>} - Game stats for all platform
  */
-async function getGameStats() {
+async function getGameStats(apiKey) {
   try {
+    if (!apiKey) {
+      throw new Error('Missing required parameter: apiKey');
+    }
 
       // Build the URL with parameters
     const params = {
@@ -15,7 +19,11 @@ async function getGameStats() {
 
     const url = buildUrlAndParams('/stats', params);
 
-    const response = await axiosInstance.get(url);
+    const response = await axiosInstance.get(url, {
+      headers: {
+        'api-key': apiKey
+      }
+    });
 
     return response.data;
   } catch (error) {

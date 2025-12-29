@@ -23,20 +23,20 @@ import {
   PlayerComparisonsResult
 } from './result-interfaces';
 
-export function getAccountInfo(params: AccountInfoParams): Promise<any>;
-export function getIsBanned(params: GetIsBannedParams): Promise<any>;
-export function getPlayerStats(params: PlayerStatsParams): Promise<any>;
-export function getSeasonalStats(params: SeasonalStatsParams): Promise<any>;
-export function getServiceStatus(): Promise<any>;
-export function getGameStats(): Promise<GameStats>;
-export function getMaps(params?: GetMapsParams): Promise<any[]>;
-export function getOperators(params?: GetOperatorsParams): Promise<any[]>;
-export function getSeasons(params?: GetSeasonsParams): Promise<any[]>;
-export function getAttachment(params?: GetAttachmentParams): Promise<any[]>;
-export function getCharms(params?: GetCharmsParams): Promise<any[]>;
-export function getWeapons(params?: GetWeaponsParams): Promise<any[]>;
-export function getUniversalSkins(params?: GetUniversalSkinsParams): Promise<any[]>;
-export function getRanks(params?: GetRanksParams): Promise<any[]>;
-export function getSearchAll(query: string): Promise<SearchAllResult>;
+export function getAccountInfo(apiKey: string, params: AccountInfoParams): Promise<any>;
+export function getIsBanned(apiKey: string, params: GetIsBannedParams): Promise<any>;
+export function getPlayerStats(apiKey: string, params: PlayerStatsParams): Promise<any>;
+export function getSeasonalStats(apiKey: string, params: SeasonalStatsParams): Promise<any>;
+export function getServiceStatus(apiKey: string): Promise<any>;
+export function getGameStats(apiKey: string): Promise<GameStats>;
+export function getMaps(apiKey: string, params?: GetMapsParams): Promise<any[]>;
+export function getOperators(apiKey: string, params?: GetOperatorsParams): Promise<any[]>;
+export function getSeasons(apiKey: string, params?: GetSeasonsParams): Promise<any[]>;
+export function getAttachment(apiKey: string, params?: GetAttachmentParams): Promise<any[]>;
+export function getCharms(apiKey: string, params?: GetCharmsParams): Promise<any[]>;
+export function getWeapons(apiKey: string, params?: GetWeaponsParams): Promise<any[]>;
+export function getUniversalSkins(apiKey: string, params?: GetUniversalSkinsParams): Promise<any[]>;
+export function getRanks(apiKey: string, params?: GetRanksParams): Promise<any[]>;
+export function getSearchAll(apiKey: string, query: string): Promise<SearchAllResult>;
 export function createDiscordR6Webhook(webhookUrl: string, playerData: any, options: DiscordWebhookOptions): Promise<any>;
-export function getPlayerComparisons(params: PlayerComparisonsParams): Promise<PlayerComparisonsResult>;
+export function getPlayerComparisons(apiKey: string, params: PlayerComparisonsParams): Promise<PlayerComparisonsResult>;

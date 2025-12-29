@@ -19,6 +19,14 @@
 npm i r6-data.js
 ```
 
+## API Key
+
+To use this package, you need an **API Key**. 
+You can obtain your API Key by registering on the official website: **[r6data.eu](https://r6data.eu/)**.
+Once registered, you can generate your personal API Key from your account settings.
+
+**Note:** This API Key must be passed as the first argument to all `get` methods.
+
 ## R6Data Website for stats and API
 
 Website where you can directly track your stats and also check the all infos that gives r6-data.js. Entire website is based on r6-data.js.
@@ -34,20 +42,23 @@ Full TypeScript support with complete type definitions and IntelliSense.
 import * as r6 from 'r6-data.js';
 import { getAccountInfo, AccountInfoParams, PlatformType } from 'r6-data.js';
 
+const apiKey = 'YOUR_API_KEY';
+
 // Usage with types
 const params: AccountInfoParams = {
   nameOnPlatform: 'PlayerName',
   platformType: 'uplay' as PlatformType
 };
 
-const accountInfo = await r6.getAccountInfo(params);
+const accountInfo = await r6.getAccountInfo(apiKey, params);
 ```
 
 ```javascript
 // CommonJS (still supported)
 const r6 = require('r6-data.js');
+const apiKey = 'YOUR_API_KEY';
 
-const accountInfo = await r6.getAccountInfo({
+const accountInfo = await r6.getAccountInfo(apiKey, {
   nameOnPlatform: 'PlayerName',
   platformType: 'uplay'
 });
@@ -62,8 +73,10 @@ const r6Info = require('r6-data.js');
 
 async function main() {
   try {
+    const apiKey = 'YOUR_API_KEY';
+    
     // Get player account information
-    const accountInfo = await r6Info.getAccountInfo({
+    const accountInfo = await r6Info.getAccountInfo(apiKey, {
       nameOnPlatform: 'PlayerName',
       platformType: 'uplay'
     });
@@ -81,8 +94,9 @@ main();
 
 ### Parameters
 
-The `getAccountInfo()` function accepts an object with the following parameters:
+The `getAccountInfo()` function accepts the API Key and an object with the following parameters:
 
+- `apiKey`: (Required) Your API Key from r6data.eu
 - `nameOnPlatform`: (Required) The player's name on the platform
 - `platformType`: (Required) The platform type - "uplay", "psn", or "xbl"
 
@@ -104,8 +118,10 @@ const r6Info = require('r6-data.js');
 
 async function main() {
   try {
+    const apiKey = 'YOUR_API_KEY';
+
     // Check if player is banned
-    const banStatus = await r6Info.getIsBanned({
+    const banStatus = await r6Info.getIsBanned(apiKey, {
       nameOnPlatform: 'PlayerName',
       platformType: 'uplay'
     });
@@ -123,8 +139,9 @@ main();
 
 ### Parameters
 
-The `getIsBanned()` function accepts an object with the following parameters:
+The `getIsBanned()` function accepts the API Key and an object with the following parameters:
 
+- `apiKey`: (Required) Your API Key from r6data.eu
 - `nameOnPlatform`: (Required) The player's name on the platform
 - `platformType`: (Required) The platform type - "uplay", "psn", or "xbl"
 
@@ -140,18 +157,19 @@ const r6Info = require('r6-data.js');
 
 async function main() {
   try {
+    const apiKey = 'YOUR_API_KEY';
+
     // Get player statistics
-    const playerStats = await r6Info.getPlayerStats({
+    const playerStats = await r6Info.getPlayerStats(apiKey, {
       nameOnPlatform: 'PlayerName',
       platformType: 'uplay',
       platform_families: 'pc'
     });
 
     console.log('Player statistics:', playerStats);
-    return playerStats;
 
     // Get player statistics for ranked mode only
-    const rankedStats = await r6Info.getPlayerStats({
+    const rankedStats = await r6Info.getPlayerStats(apiKey, {
       nameOnPlatform: 'PlayerName',
       platformType: 'uplay',
       platform_families: 'pc',
@@ -171,8 +189,9 @@ main();
 
 ### Parameters
 
-The `getPlayerStats()` function accepts an object with the following parameters:
+The `getPlayerStats()` function accepts the API Key and an object with the following parameters:
 
+- `apiKey`: (Required) Your API Key from r6data.eu
 - `nameOnPlatform`: (Required) The player's name on the platform
 - `platformType`: (Required) The platform type - "uplay", "psn", or "xbl"
 - `platform_families`: (Required) The platform family - "pc" or "console"
@@ -205,8 +224,10 @@ const r6Info = require('r6-data.js');
 
 async function main() {
   try {
+    const apiKey = 'YOUR_API_KEY';
+
     // Get seasonal statistics for a player
-    const seasonalStats = await r6Info.getSeasonalStats({
+    const seasonalStats = await r6Info.getSeasonalStats(apiKey, {
       nameOnPlatform: 'PlayerName',
       platformType: 'uplay'
     });
@@ -224,8 +245,9 @@ main();
 
 ### Parameters
 
-The `getSeasonalStats()` function accepts an object with the following parameters:
+The `getSeasonalStats()` function accepts the API Key and an object with the following parameters:
 
+- `apiKey`: (Required) Your API Key from r6data.eu
 - `nameOnPlatform`: (Required) The player's name on the platform
 - `platformType`: (Required) The platform type - "uplay", "psn", or "xbl"
 
@@ -286,8 +308,10 @@ const r6Info = require('r6-data.js');
 
 async function main() {
   try {
+    const apiKey = 'YOUR_API_KEY';
+
     // Get general game statistics
-    const gameStats = await r6Info.getGameStats();
+    const gameStats = await r6Info.getGameStats(apiKey);
 
     console.log('Game statistics:', gameStats);
     return gameStats;
@@ -333,7 +357,9 @@ const r6Info = require('r6-data.js');
 
 async function main() {
   try {
-    const comparison = await r6Info.getPlayerComparisons({
+    const apiKey = 'YOUR_API_KEY';
+    
+    const comparison = await r6Info.getPlayerComparisons(apiKey, {
       players: [
         { nameOnPlatform: 'Player1', platformType: 'uplay' },
         { nameOnPlatform: 'Player2', platformType: 'uplay' }
@@ -355,6 +381,7 @@ main();
 
 ### Parameters
 
+- `apiKey`: (Required) Your API Key from r6data.eu
 - `players`: (Required) Array of player objects with `nameOnPlatform` and `platformType`
 - `platform_families`: (Required) "pc" or "console"
 - `board_id`: (Optional) Game mode filter - "casual", "ranked", etc.
@@ -373,8 +400,10 @@ const r6Info = require('r6-data.js');
 
 async function main() {
   try {
+    const apiKey = 'YOUR_API_KEY';
+    
     // First, get player statistics
-    const playerStats = await r6Info.getPlayerStats({
+    const playerStats = await r6Info.getPlayerStats(apiKey, {
       nameOnPlatform: 'PlayerName',
       platformType: 'uplay',
       platform_families: 'pc'
@@ -439,8 +468,10 @@ const r6Info = require('r6-data.js');
 
 async function main() {
   try {
+    const apiKey = 'YOUR_API_KEY';
+
     // Search for all entities containing "black"
-    const searchResults = await r6Info.getSearchAll('black');
+    const searchResults = await r6Info.getSearchAll(apiKey, 'black');
     console.log('Search results summary:', searchResults.summary);
     
     // Access specific result categories
@@ -452,11 +483,11 @@ async function main() {
     console.log('Attachment results:', searchResults.results.attachments);
     
     // Search for a specific operator
-    const operatorSearch = await r6Info.getSearchAll('ash');
+    const operatorSearch = await r6Info.getSearchAll(apiKey, 'ash');
     console.log('Ash search results:', operatorSearch);
     
     // Search for a specific map
-    const mapSearch = await r6Info.getSearchAll('bank');
+    const mapSearch = await r6Info.getSearchAll(apiKey, 'bank');
     console.log('Bank search results:', mapSearch);
     
   } catch (error) {
@@ -469,8 +500,9 @@ main();
 
 ### Parameters
 
-The `getSearchAll()` function accepts a single required parameter:
+The `getSearchAll()` function accepts the API Key and a query:
 
+- `apiKey`: (Required) Your API Key from r6data.eu
 - `query`: (Required) The search term to query across all entities
 
 ### Search Results
@@ -514,11 +546,12 @@ const r6Info = require('r6-data.js');
 async function main() {
 
   try {
+    const apiKey = 'YOUR_API_KEY';
     
-    const ranksV1 = await r6Info.getRanks({ version: 'v1' });
+    const ranksV1 = await r6Info.getRanks(apiKey, { version: 'v1' });
     console.log('All ranks for version v1:', ranksV1);
 
-    const filteredRanksV1 = await r6Info.getRanks({ min_mmr: 2000, max_mmr: 2500, version: 'v1' });
+    const filteredRanksV1 = await r6Info.getRanks(apiKey, { min_mmr: 2000, max_mmr: 2500, version: 'v1' });
     console.log('Filtered ranks for version v1:', filteredRanksV1);
     
   } catch (error) {
@@ -543,8 +576,9 @@ const r6Info = require('r6-data.js');
 async function main() {
 
   try {
+    const apiKey = 'YOUR_API_KEY';
 
-    const serviceStatus = await r6Info.getServiceStatus();
+    const serviceStatus = await r6Info.getServiceStatus(apiKey);
     console.log('Service status:', serviceStatus);
     
   } catch (error) {
@@ -565,29 +599,30 @@ const r6Info = require('r6-data.js');
 async function main() {
 
   try {
+    const apiKey = 'YOUR_API_KEY';
 
     // Get all maps
-    const maps = await r6Info.getMaps();
+    const maps = await r6Info.getMaps(apiKey);
     console.log('All maps:', maps);
     
     // Filter maps by name
-    const filteredMapsByName = await r6Info.getMaps({ name: 'Bank' });
+    const filteredMapsByName = await r6Info.getMaps(apiKey, { name: 'Bank' });
     console.log('Maps filtered by name:', filteredMapsByName);
     
     // Filter maps by location
-    const filteredMapsByLocation = await r6Info.getMaps({ location: 'USA' });
+    const filteredMapsByLocation = await r6Info.getMaps(apiKey, { location: 'USA' });
     console.log('Maps filtered by location:', filteredMapsByLocation);
     
     // Filter maps by release date
-    const filteredMapsByReleaseDate = await r6Info.getMaps({ releaseDate: '2015-12-01' });
+    const filteredMapsByReleaseDate = await r6Info.getMaps(apiKey, { releaseDate: '2015-12-01' });
     console.log('Maps filtered by release date:', filteredMapsByReleaseDate);
     
     // Filter maps by playlists
-    const filteredMapsByPlaylists = await r6Info.getMaps({ playlists: 'ranked' });
+    const filteredMapsByPlaylists = await r6Info.getMaps(apiKey, { playlists: 'ranked' });
     console.log('Maps filtered by playlists:', filteredMapsByPlaylists);
     
     // Filter maps by rework status
-    const filteredMapsByRework = await r6Info.getMaps({ mapReworked: true });
+    const filteredMapsByRework = await r6Info.getMaps(apiKey, { mapReworked: true });
     console.log('Maps filtered by rework status:', filteredMapsByRework);
     
   } catch (error) {
@@ -616,37 +651,38 @@ const r6Info = require('r6-data.js');
 async function main() {
 
   try {
+    const apiKey = 'YOUR_API_KEY';
 
     // Get all operators
-    const operators = await r6Info.getOperators();
+    const operators = await r6Info.getOperators(apiKey);
     console.log('All operators:', operators);
     
     // Filter operators by name
-    const filteredOperatorsByName = await r6Info.getOperators({ name: 'Ash' });
+    const filteredOperatorsByName = await r6Info.getOperators(apiKey, { name: 'Ash' });
     console.log('Operators filtered by name:', filteredOperatorsByName);
     
     // Filter operators by safe name
-    const filteredOperatorsBySafeName = await r6Info.getOperators({ safename: 'recruit' });
+    const filteredOperatorsBySafeName = await r6Info.getOperators(apiKey, { safename: 'recruit' });
     console.log('Operators filtered by safe name:', filteredOperatorsBySafeName);
     
     // Filter operators by real name
-    const filteredOperatorsByRealName = await r6Info.getOperators({ realname: 'Eliza Cohen' });
+    const filteredOperatorsByRealName = await r6Info.getOperators(apiKey, { realname: 'Eliza Cohen' });
     console.log('Operators filtered by real name:', filteredOperatorsByRealName);
     
     // Filter operators by birthplace
-    const filteredOperatorsByBirthplace = await r6Info.getOperators({ birthplace: 'Jerusalem, Israel' });
+    const filteredOperatorsByBirthplace = await r6Info.getOperators(apiKey, { birthplace: 'Jerusalem, Israel' });
     console.log('Operators filtered by birthplace:', filteredOperatorsByBirthplace);
     
     // Filter operators by age
-    const filteredOperatorsByAge = await r6Info.getOperators({ age: 33 });
+    const filteredOperatorsByAge = await r6Info.getOperators(apiKey, { age: 33 });
     console.log('Operators filtered by age:', filteredOperatorsByAge);
     
     // Filter operators by date of birth
-    const filteredOperatorsByDateOfBirth = await r6Info.getOperators({ date_of_birth: '1984-12-24' });
+    const filteredOperatorsByDateOfBirth = await r6Info.getOperators(apiKey, { date_of_birth: '1984-12-24' });
     console.log('Operators filtered by date of birth:', filteredOperatorsByDateOfBirth);
     
     // Filter operators by season introduced
-    const filteredOperatorsBySeasonIntroduced = await r6Info.getOperators({ season_introduced: 'Y1S1' });
+    const filteredOperatorsBySeasonIntroduced = await r6Info.getOperators(apiKey, { season_introduced: 'Y1S1' });
     console.log('Operators filtered by season introduced:', filteredOperatorsBySeasonIntroduced);
     
     } catch (error) {
@@ -678,25 +714,26 @@ const r6Info = require('r6-data.js');
 async function main() {
 
   try {
+    const apiKey = 'YOUR_API_KEY';
 
     // Get all seasons
-    const seasons = await r6Info.getSeasons();
+    const seasons = await r6Info.getSeasons(apiKey);
     console.log('All seasons:', seasons);
 
     // Filter seasons by name
-    const filteredSeasonsByName = await r6Info.getSeasons({ name: 'Black Ice' });
+    const filteredSeasonsByName = await r6Info.getSeasons(apiKey, { name: 'Black Ice' });
     console.log('Seasons filtered by name:', filteredSeasonsByName);
 
     // Filter seasons by map
-    const filteredSeasonsByMap = await r6Info.getSeasons({ map: 'Yacht' });
+    const filteredSeasonsByMap = await r6Info.getSeasons(apiKey, { map: 'Yacht' });
     console.log('Seasons filtered by map:', filteredSeasonsByMap);
 
     // Filter seasons by operators
-    const filteredSeasonsByOperators = await r6Info.getSeasons({ operators: 'Buck, Frost' });
+    const filteredSeasonsByOperators = await r6Info.getSeasons(apiKey, { operators: 'Buck, Frost' });
     console.log('Seasons filtered by operators:', filteredSeasonsByOperators);
 
     // Filter seasons by weapons
-    const filteredSeasonsByWeapons = await r6Info.getSeasons({ weapons: 'C8-SFW, Super 90' });
+    const filteredSeasonsByWeapons = await r6Info.getSeasons(apiKey, { weapons: 'C8-SFW, Super 90' });
     console.log('Seasons filtered by weapons:', filteredSeasonsByWeapons);
 
   } catch (error) {
@@ -723,25 +760,26 @@ const r6Info = require('r6-data.js');
 async function main() {
 
   try {
+    const apiKey = 'YOUR_API_KEY';
 
     // Get all attachments
-    const attachments = await r6Info.getAttachment();
+    const attachments = await r6Info.getAttachment(apiKey);
     console.log('All attachments:', attachments);
     
     // Filter attachments by name
-    const filteredAttachmentsByName = await r6Info.getAttachment({ name: 'Red Dot Sight' });
+    const filteredAttachmentsByName = await r6Info.getAttachment(apiKey, { name: 'Red Dot Sight' });
     console.log('Attachments filtered by name:', filteredAttachmentsByName);
     
     // Filter attachments by style
-    const filteredAttachmentsByStyle = await r6Info.getAttachment({ style: 'colour' });
+    const filteredAttachmentsByStyle = await r6Info.getAttachment(apiKey, { style: 'colour' });
     console.log('Attachments filtered by style:', filteredAttachmentsByStyle);
     
     // Filter attachments by rarity
-    const filteredAttachmentsByRarity = await r6Info.getAttachment({ rarity: 'common' });
+    const filteredAttachmentsByRarity = await r6Info.getAttachment(apiKey, { rarity: 'common' });
     console.log('Attachments filtered by rarity:', filteredAttachmentsByRarity);
     
     // Filter attachments by availability
-    const filteredAttachmentsByAvailability = await r6Info.getAttachment({ availability: 'removed' });
+    const filteredAttachmentsByAvailability = await r6Info.getAttachment(apiKey, { availability: 'removed' });
     console.log('Attachments filtered by availability:', filteredAttachmentsByAvailability);
     
   } catch (error) {
@@ -762,13 +800,14 @@ Retrieving all attachments by calling `getAttachment()` without any parameters.
 
 ```javascript
 const r6Info = require('r6-data.js');
+const apiKey = 'YOUR_API_KEY';
 
 // Get all charms
-const charms = await r6Info.getCharms();
+const charms = await r6Info.getCharms(apiKey);
 console.log('All charms:', charms);
 
 // Filter charms by specific criteria
-const filteredCharms = await r6Info.getCharms({
+const filteredCharms = await r6Info.getCharms(apiKey, {
     name: 'Chibi',
     collection: 'Year 1',
     rarity: 'legendary',
@@ -797,13 +836,14 @@ const r6Info = require('r6-data.js');
 async function main() {
 
   try {
+    const apiKey = 'YOUR_API_KEY';
 
     // Get all weapons
-    const weapons = await r6Info.getWeapons();
+    const weapons = await r6Info.getWeapons(apiKey);
     console.log('All weapons:', weapons);
     
     // Filter weapons by name
-    const filteredWeaponsByName = await r6Info.getWeapons({ name: 'F2' });
+    const filteredWeaponsByName = await r6Info.getWeapons(apiKey, { name: 'F2' });
     console.log('Weapons filtered by name:', filteredWeaponsByName);
     
   } catch (error) {
@@ -829,13 +869,14 @@ const r6Info = require('r6-data.js');
 async function main() {
 
   try {
+    const apiKey = 'YOUR_API_KEY';
 
     // Get all universal skins
-    const universalSkins = await r6Info.getUniversalSkins();
+    const universalSkins = await r6Info.getUniversalSkins(apiKey);
     console.log('All universal skins:', universalSkins);
     
     // Filter universal skins by name
-    const filteredSkinsByName = await r6Info.getUniversalSkins({ name: 'Black Ice' });
+    const filteredSkinsByName = await r6Info.getUniversalSkins(apiKey, { name: 'Black Ice' });
     console.log('Universal skins filtered by name:', filteredSkinsByName);
     
   } catch (error) {

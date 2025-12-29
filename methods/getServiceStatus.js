@@ -1,10 +1,17 @@
 const axiosInstance = require('../axiosInstance/axiosInstance');
 
-async function getServiceStatus() {
+async function getServiceStatus(apiKey) {
   try {
+    if (!apiKey) {
+      throw new Error('Missing required parameter: apiKey');
+    }
 
     let url = '/serviceStatus';
-    const response = await axiosInstance.get(url);
+    const response = await axiosInstance.get(url, {
+      headers: {
+        'api-key': apiKey
+      }
+    });
 
     return response.data;
   } catch (error) {

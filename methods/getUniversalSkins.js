@@ -1,12 +1,19 @@
 const axiosInstance = require('../axiosInstance/axiosInstance');
 const buildUrlAndParams = require('./util'); 
 
-async function getUniversalSkins({ name } = {}) {
+async function getUniversalSkins(apiKey, { name } = {}) {
   try {
+    if (!apiKey) {
+      throw new Error('Missing required parameter: apiKey');
+    }
 
     const url = buildUrlAndParams('/universalSkins', { name });
 
-    const response = await axiosInstance.get(url);
+    const response = await axiosInstance.get(url, {
+      headers: {
+        'api-key': apiKey
+      }
+    });
 
     return response.data;
   } catch (error) {

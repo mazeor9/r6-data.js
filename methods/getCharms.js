@@ -1,12 +1,19 @@
 const axiosInstance = require('../axiosInstance/axiosInstance');
 const buildUrlAndParams = require('./util'); 
 
-async function getCharms({ name, collection, rarity, availability, bundle, season } = {}) {
+async function getCharms(apiKey, { name, collection, rarity, availability, bundle, season } = {}) {
   try {
+    if (!apiKey) {
+      throw new Error('Missing required parameter: apiKey');
+    }
 
     const url = buildUrlAndParams('/charms', { name, collection, rarity, availability, bundle, season });
 
-    const response = await axiosInstance.get(url);
+    const response = await axiosInstance.get(url, {
+      headers: {
+        'api-key': apiKey
+      }
+    });
 
     return response.data;
   } catch (error) {
