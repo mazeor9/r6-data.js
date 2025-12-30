@@ -21,6 +21,8 @@ npm i r6-data.js
 
 ## API Key
 
+> **Notice:** Due to the abuse of the available APIs, it has been decided that from now on, in order to use both the package and the APIs, it is necessary to register on the website and create an API key.
+
 To use this package, you need an **API Key**. 
 You can obtain your API Key by registering on the official website: **[r6data.eu](https://r6data.eu/)**.
 Once registered, you can generate your personal API Key from your account settings.
