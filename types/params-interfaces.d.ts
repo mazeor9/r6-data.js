@@ -16,6 +16,11 @@ export interface PlayerStatsParams extends AccountInfoParams {
 
 export interface SeasonalStatsParams extends AccountInfoParams {}
 
+export interface OperatorStatsParams extends AccountInfoParams {
+  seasonYear?: string;
+  modes?: 'ranked' | 'casual' | 'unranked';
+}
+
 export interface PlayerComparisonsParams {
   players: Array<{
     nameOnPlatform: string;

@@ -5,6 +5,7 @@ import {
   GetIsBannedParams,
   PlayerStatsParams,
   SeasonalStatsParams,
+  OperatorStatsParams,
   PlayerComparisonsParams,
   GetMapsParams,
   GetOperatorsParams,
@@ -27,6 +28,7 @@ export function getAccountInfo(apiKey: string, params: AccountInfoParams): Promi
 export function getIsBanned(apiKey: string, params: GetIsBannedParams): Promise<any>;
 export function getPlayerStats(apiKey: string, params: PlayerStatsParams): Promise<any>;
 export function getSeasonalStats(apiKey: string, params: SeasonalStatsParams): Promise<any>;
+export function getOperatorStats(apiKey: string, params: OperatorStatsParams): Promise<any>;
 export function getServiceStatus(apiKey: string): Promise<any>;
 export function getGameStats(apiKey: string): Promise<GameStats>;
 export function getMaps(apiKey: string, params?: GetMapsParams): Promise<any[]>;

@@ -13,6 +13,7 @@ const getPlayerStats = require('./methods/getPlayerStats');
 const createDiscordR6Webhook = require('./methods/createDiscordR6Webhook');
 const getGameStats = require('./methods/getGameStats');
 const getSeasonalStats = require('./methods/getSeasonalStats');
+const getOperatorStats = require('./methods/getOperatorStats');
 const getPlayerComparisons = require('./methods/getPlayerComparisons');
 const getIsBanned = require('./methods/getIsBanned');
 
@@ -33,6 +34,7 @@ module.exports = {
   createDiscordR6Webhook,
   getGameStats,
   getSeasonalStats,
+  getOperatorStats,
   getPlayerComparisons,
   getIsBanned,
 };
@@ -53,5 +55,6 @@ module.exports.getPlayerStats = getPlayerStats;
 module.exports.createDiscordR6Webhook = createDiscordR6Webhook;
 module.exports.getGameStats = getGameStats;
 module.exports.getSeasonalStats = getSeasonalStats;
+module.exports.getOperatorStats = getOperatorStats;
 module.exports.getPlayerComparisons = getPlayerComparisons;
 module.exports.getIsBanned = getIsBanned;

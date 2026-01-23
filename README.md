@@ -301,6 +301,50 @@ The `getSeasonalStats()` function accepts the API Key and an object with the fol
             }
 ```
 
+## Getting Operator Statistics
+
+The `getOperatorStats()` function allows you to get detailed operator statistics for a specific player.
+
+```javascript
+const r6Info = require('r6-data.js');
+
+async function main() {
+  try {
+    const apiKey = 'YOUR_API_KEY';
+
+    // Get operator statistics for a player
+    const operatorStats = await r6Info.getOperatorStats(apiKey, {
+      nameOnPlatform: 'PlayerName',
+      platformType: 'uplay',
+      // seasonYear: 'Y9S4', // Optional
+      // modes: 'ranked'     // Optional, default is 'ranked'
+    });
+
+    console.log('Operator statistics:', operatorStats);
+    return operatorStats;
+    
+  } catch (error) {
+    console.error('Error retrieving operator statistics:', error.message);
+  }
+}
+
+main();
+```
+
+### Parameters
+
+The `getOperatorStats()` function accepts the API Key and an object with the following parameters:
+
+- `apiKey`: (Required) Your API Key from r6data.eu
+- `nameOnPlatform`: (Required) The player's name on the platform
+- `platformType`: (Required) The platform type - "uplay", "psn", or "xbl"
+- `seasonYear`: (Optional) Season year (e.g., Y9S4, Y10S4)
+- `modes`: (Optional) Game mode (ranked, casual, unranked). Default is 'ranked'.
+
+### Operator Statistics Response
+
+The response contains detailed statistics for each operator played by the user.
+
 ## Getting Game Statistics
 
 The `getGameStats()` function allows you to get real-time player count statistics across all platforms including Steam, Ubisoft Connect, PlayStation, Xbox, and total player counts
