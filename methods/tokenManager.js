@@ -3,7 +3,6 @@ const axiosInstance = require('../axiosInstance/axiosInstance');
 async function generateToken(userId) {
   try {
     const response = await axiosInstance.post('/token', { userId });
-    console.log('Token generated with success');
     return response.data.token;
   } catch (error) {
     console.error('Error during the token request:', error.message);

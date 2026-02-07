@@ -11,7 +11,8 @@ async function createDiscordR6Webhook(webhookUrl, playerData, options = {}) {
     }
 
     // Validate webhook URL format
-    if (!webhookUrl.includes('discord.com/api/webhooks/')) {
+    const discordWebhookRegex = /^https:\/\/(?:ptb\.|canary\.)?discord\.com\/api\/webhooks\/\d+\/[A-Za-z0-9-_]+$/;
+    if (!discordWebhookRegex.test(webhookUrl)) {
       throw new Error('Invalid Discord webhook URL format');
     }
 

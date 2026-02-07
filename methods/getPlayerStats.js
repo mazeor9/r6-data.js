@@ -62,12 +62,6 @@ async function getPlayerStats(apiKey, { nameOnPlatform, platformType, platform_f
           }
         });
       }
-      
-      response.data.platform_families_full_profiles.forEach(profile => {
-        if (profile.board_ids_full_profiles) {
-          console.log(JSON.stringify(profile.board_ids_full_profiles, null, 2));
-        }
-      });
     }
     
     return response.data;
