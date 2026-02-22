@@ -213,7 +213,7 @@ function getRankName(rankNumber) {
     36: 'Champion'
   };
   
-  return ranks[rankNumber] || 'Unknown Rank';
+  return ranks[rankNumber] || 'Unknown Rank' || 'Rank not mapped';
 }
 
 module.exports = createDiscordR6Webhook;
