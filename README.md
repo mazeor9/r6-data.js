@@ -584,6 +584,8 @@ The `getRanks()` function supports retrieving rank information across different 
 
 `V6: Y7S4+ | #28+ | Solar Raid+ (Ranked 2.0)`
 
+`V7: Y11S2+ | #42+ | Coming in June 2026 (Ranked 3.0)`
+
 ### Version 1 (v1)
 
 ```javascript
