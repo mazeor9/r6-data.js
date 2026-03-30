@@ -1,7 +1,7 @@
 {
   "name": "r6-data.js",
   "version": "3.0.0",
-  "description": "R6 (Rainbow Six Siege) API wrapper for player stats, operators, maps, ranks, seasons, charms, skins, game datas and ban status. Last Updated Y11S1",
+  "description": "R6 Siege (Rainbow Six Siege) API wrapper for player stats, operators, maps, ranks, seasons, charms, skins, game datas and ban status. Last Updated Y11S1",
   "main": "src/index.js",
   "module": "src/index.js",
   "exports": {
@@ -60,7 +60,7 @@
   },
   "devDependencies": {
     "@types/node": "^25.5.0",
-    "eslint": "^10.0.2",
-    "typescript": "^5.9.3"
+    "eslint": "^10.1.0",
+    "typescript": "^6.0.2"
   }
 }
