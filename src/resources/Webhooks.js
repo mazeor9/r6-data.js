@@ -1,3 +1,51 @@
+/** @typedef {import('../R6Client')} R6Client */
+/** @typedef {import('../../types/params-interfaces').DiscordWebhookOptions} DiscordWebhookOptions */
+
+/**
+ * @typedef {Error & {
+ *   response?: {
+ *     status?: number,
+ *     data?: any,
+ *     headers?: Record<string, string>
+ *   }
+ * }} HttpClientError
+ */
+
+/**
+ * @typedef {{
+ *   name: string,
+ *   value: string,
+ *   inline: boolean
+ * }} DiscordEmbedField
+ */
+
+/**
+ * @typedef {{
+ *   title: string,
+ *   description: string,
+ *   color: number,
+ *   fields: DiscordEmbedField[],
+ *   thumbnail: { url: string },
+ *   footer: { text: string },
+ *   timestamp: string
+ * }} DiscordEmbed
+ */
+
+/**
+ * @typedef {{
+ *   embeds: DiscordEmbed[],
+ *   content?: string
+ * }} DiscordWebhookPayload
+ */
+
+/**
+ * @param {unknown} error
+ * @returns {HttpClientError}
+ */
+function asHttpError(error) {
+  return /** @type {HttpClientError} */ (error);
+}
+
 class Webhooks {
   /**
    * @param {R6Client} client - The main client instance
@@ -7,19 +55,19 @@ class Webhooks {
   }
 
   /**
-   * Create a Discord webhook from player stats
-   * @param {string} webhookUrl - The URL of the Discord webhook
-   * @param {Object} playerData - Player stats object
-   * @param {Object} options - Formatting and metadata options
-   * @returns {Promise<Object>} - The discord webhook creation response
+   * Create a Discord webhook from player stats.
+   * @param {string} webhookUrl
+   * @param {any} playerData
+   * @param {DiscordWebhookOptions} options
+   * @returns {Promise<{ success: true, messageId?: string, sentAt: string }>}
    */
-  async createDiscordR6Webhook(webhookUrl, playerData, options = {}) {
+  async createDiscordR6Webhook(webhookUrl, playerData, options) {
     try {
       if (!webhookUrl || !playerData) {
         throw new Error('Missing required parameters: webhookUrl and playerData are required');
       }
 
-      if (!options.playerName) {
+      if (!options?.playerName) {
         throw new Error('Missing required parameter: options.playerName is required');
       }
 
@@ -29,9 +77,10 @@ class Webhooks {
       }
 
       const embed = this._createR6StatsEmbed(playerData, options);
-      
+
+      /** @type {DiscordWebhookPayload} */
       const payload = {
-        embeds: [embed]
+        embeds: [embed],
       };
 
       if (options.message) {
@@ -39,35 +88,43 @@ class Webhooks {
       }
 
       const response = await this.client.httpClient.post(webhookUrl, payload);
-      
+
       return {
         success: true,
         messageId: response.headers['x-discord-message-id'],
-        sentAt: new Date().toISOString()
+        sentAt: new Date().toISOString(),
       };
-
     } catch (error) {
-      console.error('Error during createDiscordR6Webhook request:', error.message);
-      if (error.response && error.response.status === 404) {
+      const err = asHttpError(error);
+      console.error('Error during createDiscordR6Webhook request:', err.message);
+      if (err.response?.status === 404) {
         throw new Error('Discord webhook not found - check webhook URL');
       }
-      if (error.response && error.response.status === 401) {
+      if (err.response?.status === 401) {
         throw new Error('Discord webhook unauthorized - webhook may be disabled');
       }
-      if (error.response && error.response.status === 429) {
+      if (err.response?.status === 429) {
         throw new Error('Discord rate limit exceeded - try again later');
       }
-      throw error;
+      throw err;
     }
   }
 
+  /**
+   * @param {any} playerData
+   * @param {DiscordWebhookOptions} options
+   * @returns {DiscordEmbed}
+   */
   _createR6StatsEmbed(playerData, options) {
-    let stats, dataSource;
-    
-    if (playerData.stats) {
+    /** @type {any} */
+    let stats;
+    /** @type {'Steam' | 'Ubisoft' | 'Custom'} */
+    let dataSource;
+
+    if (playerData?.stats) {
       stats = playerData.stats;
       dataSource = 'Steam';
-    } else if (playerData.platform_families_full_profiles) {
+    } else if (playerData?.platform_families_full_profiles) {
       stats = this._parseUbisoftStatsFromResponse(playerData);
       dataSource = 'Ubisoft';
     } else if (Array.isArray(playerData)) {
@@ -78,60 +135,71 @@ class Webhooks {
       dataSource = 'Custom';
     }
 
-    const embed = {
+    return {
       title: `${options.title || 'Rainbow Six Siege Stats'}`,
       description: `Stats for **${options.playerName}**`,
       color: options.color || 0xF99E1A,
       fields: this._createStatsFields(stats, dataSource),
       thumbnail: {
-        url: options.avatarUrl || 'https://ubisoft-avatars.akamaized.net/default_256_256.png'
+        url: options.avatarUrl || 'https://ubisoft-avatars.akamaized.net/default_256_256.png',
       },
       footer: {
-        text: `Data from ${dataSource} | r6-data.js`
+        text: `Data from ${dataSource} | r6-data.js`,
       },
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
-
-    return embed;
   }
 
+  /**
+   * @param {any} response
+   * @returns {{ ranked: any, standard: any }}
+   */
   _parseUbisoftStatsFromResponse(response) {
-    const platformProfile = response.platform_families_full_profiles[0];
+    const platformProfile = response?.platform_families_full_profiles?.[0];
     if (!platformProfile || !platformProfile.board_ids_full_profiles) {
       return { ranked: null, standard: null };
     }
-    
-    const boardsArray = platformProfile.board_ids_full_profiles;
-    return this._parseUbisoftStats(boardsArray);
+
+    return this._parseUbisoftStats(platformProfile.board_ids_full_profiles);
   }
 
+  /**
+   * @param {any[]} data
+   * @returns {{ ranked: any, standard: any }}
+   */
   _parseUbisoftStats(data) {
     let rankedStats = null;
     let standardStats = null;
-    
+
     for (const board of data) {
-      if (board.board_id === 'ranked' && board.full_profiles && board.full_profiles[0]) {
+      if (board.board_id === 'ranked' && board.full_profiles?.[0]) {
         rankedStats = {
           profile: board.full_profiles[0].profile,
-          season_statistics: board.full_profiles[0].season_statistics
+          season_statistics: board.full_profiles[0].season_statistics,
         };
       }
-      
-      if (board.board_id === 'standard' && board.full_profiles && board.full_profiles[0]) {
+
+      if (board.board_id === 'standard' && board.full_profiles?.[0]) {
         standardStats = {
           profile: board.full_profiles[0].profile,
-          season_statistics: board.full_profiles[0].season_statistics
+          season_statistics: board.full_profiles[0].season_statistics,
         };
       }
     }
-    
+
     return {
       ranked: rankedStats,
-      standard: standardStats
+      standard: standardStats,
     };
   }
 
+  /**
+   * @param {any} stats
+   * @param {'Steam' | 'Ubisoft' | 'Custom'} dataSource
+   * @returns {DiscordEmbedField[]}
+   */
   _createStatsFields(stats, dataSource) {
+    /** @type {DiscordEmbedField[]} */
     const fields = [];
 
     if (dataSource === 'Steam') {
@@ -139,74 +207,84 @@ class Webhooks {
         {
           name: 'General Stats',
           value: `**Matches Played:** ${stats.generalStats?.matchesPlayed || 'N/A'}\n**Win Rate:** ${stats.generalStats?.winRate || 0}%\n**Playtime:** ${stats.generalStats?.totalTimePlayedHours || 0}h`,
-          inline: true
+          inline: true,
         },
         {
           name: 'Combat Stats',
           value: `**K/D Ratio:** ${stats.combatStats?.kdRatio || 'N/A'}\n**Total Kills:** ${stats.combatStats?.totalKills || 'N/A'}\n**Headshot %:** ${stats.combatStats?.headshotPercentage || 0}%`,
-          inline: true
+          inline: true,
         },
         {
           name: 'Ranked Stats',
           value: `**Ranked Matches:** ${stats.rankedStats?.rankedMatches || 'N/A'}\n**Ranked K/D:** ${stats.rankedStats?.rankedKD || 'N/A'}\n**Ranked Win Rate:** ${stats.rankedStats?.rankedWinRate || 0}%`,
-          inline: true
+          inline: true,
         }
       );
     } else if (dataSource === 'Ubisoft') {
       const rankedData = stats.ranked;
-      
-      if (rankedData && rankedData.profile && rankedData.season_statistics) {
+
+      if (rankedData?.profile && rankedData?.season_statistics) {
         const profile = rankedData.profile;
         const seasonStats = rankedData.season_statistics;
-        
         const totalMatches = (seasonStats.match_outcomes.wins || 0) + (seasonStats.match_outcomes.losses || 0);
         const winRate = totalMatches > 0 ? Math.round((seasonStats.match_outcomes.wins / totalMatches) * 100) : 0;
         const kd = seasonStats.deaths > 0 ? Math.round((seasonStats.kills / seasonStats.deaths) * 100) / 100 : seasonStats.kills;
-        
+
         fields.push(
           {
             name: 'Ranked Profile',
             value: `**Rank:** ${this._getRankName(profile.rank)}\n**Points:** ${profile.rank_points}\n**Max Rank:** ${this._getRankName(profile.max_rank)}`,
-            inline: true
+            inline: true,
           },
           {
             name: 'Performance',
             value: `**K/D:** ${kd}\n**Win Rate:** ${winRate}%\n**Matches:** ${totalMatches}`,
-            inline: true
+            inline: true,
           },
           {
             name: 'Combat Stats',
             value: `**Kills:** ${seasonStats.kills}\n**Deaths:** ${seasonStats.deaths}\n**Wins:** ${seasonStats.match_outcomes.wins}\n**Losses:** ${seasonStats.match_outcomes.losses}`,
-            inline: true
+            inline: true,
           }
         );
       } else {
         const standardData = stats.standard;
-        if (standardData && standardData.season_statistics) {
+        if (standardData?.season_statistics) {
           const seasonStats = standardData.season_statistics;
           const totalMatches = (seasonStats.match_outcomes.wins || 0) + (seasonStats.match_outcomes.losses || 0);
           const winRate = totalMatches > 0 ? Math.round((seasonStats.match_outcomes.wins / totalMatches) * 100) : 0;
           const kd = seasonStats.deaths > 0 ? Math.round((seasonStats.kills / seasonStats.deaths) * 100) / 100 : seasonStats.kills;
-          
+
           fields.push({
             name: 'Standard Stats',
             value: `**K/D:** ${kd}\n**Win Rate:** ${winRate}%\n**Matches:** ${totalMatches}\n**Kills:** ${seasonStats.kills}\n**Deaths:** ${seasonStats.deaths}`,
-            inline: false
+            inline: false,
           });
         } else {
           fields.push({
             name: 'No Data',
             value: 'No ranked or standard stats available.',
-            inline: false
+            inline: false,
           });
         }
       }
+    } else {
+      fields.push({
+        name: 'Data',
+        value: 'Custom player data provided.',
+        inline: false,
+      });
     }
 
     return fields;
   }
 
+  /**
+   * @param {number | string | undefined} rankNumber
+   * @returns {string}
+   */
   _getRankName(rankNumber) {
+    /** @type {Record<number, string>} */
     const ranks = {
       0: 'Unranked',
       1: 'Copper V', 2: 'Copper IV', 3: 'Copper III', 4: 'Copper II', 5: 'Copper I',
@@ -216,9 +294,9 @@ class Webhooks {
       21: 'Platinum V', 22: 'Platinum IV', 23: 'Platinum III', 24: 'Platinum II', 25: 'Platinum I',
       26: 'Emerald V', 27: 'Emerald IV', 28: 'Emerald III', 29: 'Emerald II', 30: 'Emerald I',
       31: 'Diamond V', 32: 'Diamond IV', 33: 'Diamond III', 34: 'Diamond II', 35: 'Diamond I',
-      36: 'Champion'
+      36: 'Champion',
     };
-    
+
     const n = Number(rankNumber);
     if (!Number.isFinite(n)) return 'Rank not mapped';
     return ranks[n] ?? 'Rank not mapped';
