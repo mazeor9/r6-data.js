@@ -21,7 +21,7 @@
     "README.md"
   ],
   "scripts": {
-    "test": "node -e \"console.log('no tests yet')\"",
+    "test": "node test.ts",
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
@@ -48,8 +48,8 @@
     "siege-stats",
     "r6-tracker",
     "operators",
-    "maps",
-    "ranks",
+    "R6",
+    "r6 siege",
     "r6s stats"
   ],
   "author": "mazeor",
