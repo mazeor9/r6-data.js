@@ -1,6 +1,6 @@
 # r6-data.js — R6 Rainbow Six Siege API Wrapper
 
-**Rainbow Six Siege (R6) API sdk** - Get player stats, operators, maps, ranks, seasons, charms, and more. Full TypeScript support included. Last updated Y11S1.1.
+**Rainbow Six Siege (R6) API sdk** - Get player stats, operators, maps, ranks, seasons, charms, and more. Full TypeScript support included. Last updated Y11S2 - Ranked 3.0.
 
 <div align="center">
   <p>
