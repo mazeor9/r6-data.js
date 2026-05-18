@@ -1,6 +1,6 @@
 const pkg = require('../../package.json');
 
-const BASE_URL = 'https://api.r6data.eu/api';
+const BASE_URL = 'https://api.r6data.com/api';
 
 /**
  * @typedef {Object} HttpResponse

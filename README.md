@@ -27,13 +27,13 @@ npm i r6-data.js
 
 ## Getting Started
 
-> **Notice:** Due to the abuse of the available APIs, it is necessary to register on [r6data.eu](https://r6data.eu/) and create an API key to use this package.
+> **Notice:** Due to the abuse of the available APIs, it is necessary to register on [r6data.com](https://r6data.com/) and create an API key to use this package.
 
 ## R6Data Website for stats and API
 
 Website where you can directly track your stats and also check all the info that r6-data.js provides. The entire website is based on r6-data.js.
 
-Visit the official website: **[r6data.eu](https://r6data.eu/)**
+Visit the official website: **[r6data.com](https://r6data.com/)**
 
 ### 1. Initialization
 The entire SDK is accessed through the `R6Client` instance.
@@ -170,7 +170,7 @@ const seasonalStats = await r6.players.getSeasonalStats({
             "displayName": "Rank Points",
             "metadata": {
               "rank": "PLATINUM II",
-              "imageUrl": "https://r6data.eu/assets/img/r6_ranks_img/platinum-2.webp",
+              "imageUrl": "https://r6data.com/assets/img/r6_ranks_img/platinum-2.webp",
               "color": "#44ccc2"
             },
             "value": 3300,
