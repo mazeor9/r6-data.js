@@ -93,3 +93,26 @@ export interface DiscordWebhookOptions {
   color?: number;
   avatarUrl?: string;
 }
+
+/**
+ * A single `.rec` replay file to upload. Can be provided as:
+ * - a file path string (read from disk)
+ * - raw bytes (Buffer / Uint8Array / ArrayBuffer)
+ * - a Blob / File
+ * - an object describing the file: `{ path, name? }` or `{ name, data }`
+ */
+export type ReplayFileInput =
+  | string
+  | Buffer
+  | Uint8Array
+  | ArrayBuffer
+  | Blob
+  | {
+      name?: string;
+      data?: Buffer | Uint8Array | ArrayBuffer | Blob | string;
+      path?: string;
+    };
+
+export interface UploadReplaysParams {
+  files: ReplayFileInput | ReplayFileInput[];
+}

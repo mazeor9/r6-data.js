@@ -42,7 +42,8 @@ function joinUrl(baseURL, path) {
  * @param {string} apiKey
  * @returns {{
  *   get: (url: string) => Promise<HttpResponse>,
- *   post: (url: string, data?: any) => Promise<HttpResponse>
+ *   post: (url: string, data?: any) => Promise<HttpResponse>,
+ *   postForm: (url: string, formData: FormData) => Promise<HttpResponse>
  * }}
  */
 function createHttpClient(apiKey) {
@@ -54,29 +55,14 @@ function createHttpClient(apiKey) {
   };
 
   /**
+   * Perform the fetch and normalize the response (or throw an HttpClientError).
    * @param {string} method
-   * @param {string} url
-   * @param {any} [data]
+   * @param {string} fullUrl
+   * @param {Record<string, string>} headers
+   * @param {string | FormData} [body]
    * @returns {Promise<HttpResponse>}
    */
-  async function request(method, url, data) {
-    const absolute = isAbsoluteUrl(url);
-    const fullUrl = absolute ? url : joinUrl(BASE_URL, url);
-
-    /** @type {Record<string, string>} */
-    const headers = { ...baseHeaders };
-
-    if (!absolute) {
-      headers['api-key'] = apiKey;
-    }
-
-    /** @type {string | undefined} */
-    let body;
-    if (data !== undefined) {
-      headers['Content-Type'] = 'application/json';
-      body = JSON.stringify(data);
-    }
-
+  async function send(method, fullUrl, headers, body) {
     const response = await fetch(fullUrl, { method, headers, body });
     /** @type {Record<string, string>} */
     const responseHeaders = Object.fromEntries(response.headers.entries());
@@ -111,6 +97,33 @@ function createHttpClient(apiKey) {
     };
   }
 
+  /**
+   * @param {string} method
+   * @param {string} url
+   * @param {any} [data]
+   * @returns {Promise<HttpResponse>}
+   */
+  function request(method, url, data) {
+    const absolute = isAbsoluteUrl(url);
+    const fullUrl = absolute ? url : joinUrl(BASE_URL, url);
+
+    /** @type {Record<string, string>} */
+    const headers = { ...baseHeaders };
+
+    if (!absolute) {
+      headers['api-key'] = apiKey;
+    }
+
+    /** @type {string | undefined} */
+    let body;
+    if (data !== undefined) {
+      headers['Content-Type'] = 'application/json';
+      body = JSON.stringify(data);
+    }
+
+    return send(method, fullUrl, headers, body);
+  }
+
   return {
     /**
      * @param {string} url
@@ -127,6 +140,26 @@ function createHttpClient(apiKey) {
      */
     post(url, data) {
       return request('POST', url, data);
+    },
+
+    /**
+     * Send a multipart/form-data POST (e.g. file uploads). The Content-Type
+     * header is intentionally left unset so fetch adds the multipart boundary.
+     * @param {string} url
+     * @param {FormData} formData
+     * @returns {Promise<HttpResponse>}
+     */
+    postForm(url, formData) {
+      const absolute = isAbsoluteUrl(url);
+      const fullUrl = absolute ? url : joinUrl(BASE_URL, url);
+
+      /** @type {Record<string, string>} */
+      const headers = { ...baseHeaders };
+      if (!absolute) {
+        headers['api-key'] = apiKey;
+      }
+
+      return send('POST', fullUrl, headers, formData);
     },
   };
 }

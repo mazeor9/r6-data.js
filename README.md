@@ -306,7 +306,7 @@ const status = await r6.game.getServiceStatus();
 
 ---
 
-## 🔔 Webhooks Resource (`r6.webhooks`)
+## Webhooks Resource (`r6.webhooks`)
 
 The `createDiscordR6Webhook()` function allows you to send Rainbow Six Siege player statistics directly to a Discord channel in beautifully formatted dynamic embeds. It automatically detects and formats data from `Ubisoft API` and `Steam`.
 
@@ -330,6 +330,97 @@ const webhookResult = await r6.webhooks.createDiscordR6Webhook(
     avatarUrl: 'https://example.com/avatar.png'
   }
 );
+```
+
+---
+
+## Match Replay Resource (`r6.matchReplay`)
+
+Upload Rainbow Six Siege `.rec` replay files and read back the parsed match data
+(scoreboard, kill feed, objective events, per-round breakdown, ...). These
+methods are backed by the r6data replay service and authenticate with the same
+API key used by the rest of the SDK.
+
+> **Notice:** Replay storage is plan-limited (free, pro, ultra, ...). The number
+> of replays you can keep is returned in the `quota` field of the upload
+> response.
+
+### `uploadReplays(files)` — POST
+Uploads one or more `.rec` files belonging to the **same match** and returns the
+parsed payload, the saved match summary, and your current quota. You can send up
+to **20 files** per request (e.g. one file per round).
+
+Accepted inputs (single value or array):
+- a file path string (read from disk)
+- raw bytes (`Buffer` / `Uint8Array` / `ArrayBuffer`)
+- a `Blob` / `File`
+- an object: `{ path, name? }` or `{ name, data }`
+
+```javascript
+// Upload a whole match (all the round .rec files at once)
+const result = await r6.matchReplay.uploadReplays([
+  './replays/Match-2025-Round1.rec',
+  './replays/Match-2025-Round2.rec',
+  './replays/Match-2025-Round3.rec'
+]);
+
+console.log('Match ID:', result.matchID);
+console.log('Rounds parsed:', result.rounds.length);
+console.log('Saved match:', result.match);
+console.log('Quota:', result.quota); // { plan, limit, used, remaining }
+
+// A single file works too
+await r6.matchReplay.uploadReplays('./replays/Match-2025-Round1.rec');
+
+// Or raw bytes / Blob with a custom filename
+await r6.matchReplay.uploadReplays({ name: 'round1.rec', data: buffer });
+```
+
+### `getMatch(matchId)` — GET
+Retrieves the parsed data of a previously uploaded match by its `matchID`
+(the value returned in the upload response).
+
+```javascript
+const replay = await r6.matchReplay.getMatch('the-match-id');
+
+console.log('Match summary:', replay.match);
+console.log('Match ID:', replay.matchID);
+console.log('Rounds:', replay.rounds);
+```
+
+**Response shape:**
+```jsonc
+{
+  "match": {
+    "match_id": "…",
+    "replay_match_id": "…",
+    "title": "Clubhouse",
+    "map": "Clubhouse",
+    "mode": "Bomb",
+    "match_type": "Ranked",
+    "rounds_count": 9,
+    "blue_score": 5,
+    "orange_score": 4,
+    "total_kills": 73,
+    "players_count": 10
+    // …started_at_utc, uploaded_at_utc, updated_at_utc
+  },
+  "matchID": "…",
+  "rounds": [ /* per-round header, scoreboard, kill feed, objective events */ ]
+}
+```
+
+### TypeScript
+
+```typescript
+import { R6Client, ReplayFileInput, UploadReplaysResult, MatchReplayResult } from 'r6-data.js';
+
+const r6 = new R6Client({ apiKey: 'YOUR_API_KEY' });
+
+const files: ReplayFileInput[] = ['./replays/round1.rec', './replays/round2.rec'];
+
+const uploaded: UploadReplaysResult = await r6.matchReplay.uploadReplays(files);
+const match: MatchReplayResult = await r6.matchReplay.getMatch(uploaded.matchID);
 ```
 
 ## Error Handling

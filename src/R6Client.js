@@ -2,6 +2,7 @@ const createHttpClient = require('./utils/httpClient');
 const Players = require('./resources/Players');
 const Game = require('./resources/Game');
 const Webhooks = require('./resources/Webhooks');
+const MatchReplay = require('./resources/MatchReplay');
 
 class R6Client {
   /**
@@ -20,6 +21,7 @@ class R6Client {
     this.players = new Players(this);
     this.game = new Game(this);
     this.webhooks = new Webhooks(this);
+    this.matchReplay = new MatchReplay(this);
   }
 }
 

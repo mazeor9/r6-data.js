@@ -85,3 +85,40 @@ export interface PlayerComparisonsResult {
     error: string;
   }>;
 }
+
+export interface ReplayMatchSummary {
+  match_id: string;
+  replay_match_id: string;
+  title: string;
+  map: string;
+  mode: string;
+  match_type: string;
+  started_at_utc: string | null;
+  uploaded_at_utc: string | null;
+  updated_at_utc: string | null;
+  rounds_count: number;
+  blue_score: number;
+  orange_score: number;
+  total_kills: number;
+  players_count: number;
+}
+
+export interface ReplayQuota {
+  plan: string;
+  limit: number;
+  used: number;
+  remaining: number;
+}
+
+export interface MatchReplayResult {
+  match: ReplayMatchSummary;
+  matchID: string;
+  rounds: any[];
+}
+
+export interface UploadReplaysResult {
+  matchID: string;
+  rounds: any[];
+  match: ReplayMatchSummary;
+  quota: ReplayQuota;
+}

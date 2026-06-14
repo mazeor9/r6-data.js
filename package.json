@@ -50,7 +50,10 @@
     "operators",
     "R6",
     "r6 siege",
-    "r6s stats"
+    "r6s stats",
+    "r6 replay",
+    "r6-dissect",
+    "r6 dissect"
   ],
   "author": "mazeor",
   "license": "MIT",

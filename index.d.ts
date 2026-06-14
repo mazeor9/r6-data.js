@@ -4,6 +4,6 @@ export * from './types/base-types';
 export * from './types/params-interfaces';
 export * from './types/result-interfaces';
 
-import { R6Client, Players, Game, Webhooks } from './types/classes';
+import { R6Client, Players, Game, Webhooks, MatchReplay } from './types/classes';
 
-export { R6Client, Players, Game, Webhooks };
+export { R6Client, Players, Game, Webhooks, MatchReplay };

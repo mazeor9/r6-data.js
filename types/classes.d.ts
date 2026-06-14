@@ -13,13 +13,16 @@ import {
   GetWeaponsParams,
   GetUniversalSkinsParams,
   GetRanksParams,
-  DiscordWebhookOptions
+  DiscordWebhookOptions,
+  ReplayFileInput
 } from './params-interfaces';
 
 import {
   SearchAllResult,
   GameStats,
-  PlayerComparisonsResult
+  PlayerComparisonsResult,
+  MatchReplayResult,
+  UploadReplaysResult
 } from './result-interfaces';
 
 export class Players {
@@ -50,9 +53,15 @@ export class Webhooks {
   createDiscordR6Webhook(webhookUrl: string, playerData: any, options: DiscordWebhookOptions): Promise<any>;
 }
 
+export class MatchReplay {
+  getMatch(matchId: string): Promise<MatchReplayResult>;
+  uploadReplays(files: ReplayFileInput | ReplayFileInput[]): Promise<UploadReplaysResult>;
+}
+
 export class R6Client {
   constructor(config: { apiKey: string });
   players: Players;
   game: Game;
   webhooks: Webhooks;
+  matchReplay: MatchReplay;
 }
