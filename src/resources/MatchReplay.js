@@ -39,7 +39,7 @@ function isRecFilename(name) {
  * @returns {Promise<{ name: string, blob: Blob }>}
  */
 async function toUploadEntry(file) {
-  // Absolute/relative path on disk
+  // Absolute/relative path on disk/machine
   if (typeof file === 'string') {
     const data = await fs.promises.readFile(file);
     return { name: path.basename(file), blob: new Blob([/** @type {any} */ (data)]) };
@@ -70,7 +70,7 @@ async function toUploadEntry(file) {
     }
   }
 
-  throw new Error('Invalid replay file entry. Provide a file path, Buffer, Blob, or { path } / { name, data } object.');
+  throw new Error('Invalid replay file entry. Provide to function a file path, Buffer, Blob, or { path } / { name, data } object.');
 }
 
 class MatchReplay {
@@ -163,7 +163,7 @@ class MatchReplay {
         throw new Error('Authentication error');
       }
       if (err.response?.status === 403) {
-        throw new Error(err.response?.data?.error || 'Replay upload limit reached for your plan');
+        throw new Error(err.response?.data?.error || 'Replay upload limit reached for your plan. Try to delete some matches');
       }
       throw err;
     }
