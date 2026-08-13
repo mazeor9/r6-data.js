@@ -1,34 +1,21 @@
 // Parameter interfaces for r6-data.js
 
-import { PlatformType, PlatformFamily, BoardId, RankVersion } from './base-types';
+import { PlatformType, PlatformFamily, RankVersion } from './base-types';
 
-export interface AccountInfoParams {
+export interface ProfileParams {
   nameOnPlatform: string;
   platformType: PlatformType;
+  platform_families?: PlatformFamily;
 }
 
-export interface GetIsBannedParams extends AccountInfoParams {}
-
-export interface PlayerStatsParams extends AccountInfoParams {
-  platform_families: PlatformFamily;
-  board_id?: BoardId;
+export interface OperatorStatsParams extends Omit<ProfileParams, 'platform_families'> {
+  seasonYear?: string | 'all';
+  modes?: 'all' | 'ranked' | 'standard' | 'unranked' | 'quick-match' | 'casual' | 'dual-front' | 'siege-cup';
 }
 
-export interface SeasonalStatsParams extends AccountInfoParams {}
-
-export interface OperatorStatsParams extends AccountInfoParams {
-  seasonYear?: string;
-  modes?: 'ranked' | 'casual' | 'unranked';
-}
-
-export interface PlayerComparisonsParams {
-  players: Array<{
-    nameOnPlatform: string;
-    platformType: PlatformType;
-  }>;
-  platform_families: PlatformFamily;
-  board_id?: BoardId;
-  compareFields?: string[];
+export interface LeaderboardParams {
+  page?: number;
+  platform?: PlatformFamily;
 }
 
 export interface GetMapsParams {

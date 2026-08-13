@@ -1,22 +1,12 @@
 const buildUrlAndParams = require('../utils/buildUrl');
 
 /** @typedef {import('../R6Client')} R6Client */
-/** @typedef {import('../../types/base-types').BoardId} BoardId */
-/** @typedef {import('../../types/base-types').PlatformFamily} PlatformFamily */
-/** @typedef {import('../../types/base-types').PlatformType} PlatformType */
-/** @typedef {import('../../types/params-interfaces').AccountInfoParams} AccountInfoParams */
-/** @typedef {import('../../types/params-interfaces').GetIsBannedParams} GetIsBannedParams */
-/** @typedef {import('../../types/params-interfaces').PlayerStatsParams} PlayerStatsParams */
-/** @typedef {import('../../types/params-interfaces').SeasonalStatsParams} SeasonalStatsParams */
+/** @typedef {import('../../types/params-interfaces').ProfileParams} ProfileParams */
 /** @typedef {import('../../types/params-interfaces').OperatorStatsParams} OperatorStatsParams */
-/** @typedef {import('../../types/params-interfaces').PlayerComparisonsParams} PlayerComparisonsParams */
-
-/**
- * @typedef {{
- *   nameOnPlatform: string,
- *   platformType: PlatformType
- * }} ComparisonPlayer
- */
+/** @typedef {import('../../types/params-interfaces').LeaderboardParams} LeaderboardParams */
+/** @typedef {import('../../types/result-interfaces').PlayerProfileResponse} PlayerProfileResponse */
+/** @typedef {import('../../types/result-interfaces').OperatorStatsResponse} OperatorStatsResponse */
+/** @typedef {import('../../types/result-interfaces').LeaderboardResponse} LeaderboardResponse */
 
 /**
  * @typedef {Error & {
@@ -36,38 +26,24 @@ function asHttpError(error) {
   return /** @type {HttpClientError} */ (error);
 }
 
-/** @type {BoardId[]} */
-const VALID_BOARD_IDS = ['casual', 'event', 'warmup', 'standard', 'ranked'];
-
 /**
- * @param {BoardId | undefined} boardId
+ * @param {string} method
+ * @param {unknown} error
+ * @returns {never}
  */
-function validateBoardId(boardId) {
-  if (boardId && !VALID_BOARD_IDS.includes(boardId)) {
-    throw new Error('Invalid board_id. Must be one of: casual, event, warmup, standard, ranked');
+function rethrowRequestError(method, error) {
+  const err = asHttpError(error);
+  console.error(`Error during the ${method} request:`, err.message);
+  if (err.response?.status === 401) {
+    throw new Error('Authentication error');
   }
+  throw err;
 }
 
-/**
- * @param {any} data
- * @param {BoardId | undefined} boardId
- */
-function filterBoardProfiles(data, boardId) {
-  if (!boardId || !data?.platform_families_full_profiles) {
-    return;
-  }
-
-  /** @type {any[]} */
-  const profiles = data.platform_families_full_profiles;
-  profiles.forEach((profile) => {
-    if (Array.isArray(profile.board_ids_full_profiles)) {
-      profile.board_ids_full_profiles = profile.board_ids_full_profiles.filter(
-        /** @param {any} board */
-        (board) => board.board_id === boardId
-      );
-    }
-  });
-}
+const VALID_PLATFORM_FAMILIES = new Set(['pc', 'psn', 'xbl']);
+const VALID_OPERATOR_MODES = new Set([
+  'all', 'ranked', 'standard', 'unranked', 'quick-match', 'casual', 'dual-front', 'siege-cup',
+]);
 
 class Players {
   /**
@@ -78,290 +54,78 @@ class Players {
   }
 
   /**
-   * Get Rainbow Six Siege player account information.
-   * @param {AccountInfoParams} params
-   * @returns {Promise<any>}
+   * Get the complete V2 player profile in one request.
+   * The response contains account, stats, ban status, seasons and rank history.
+   * @param {ProfileParams} params
+   * @returns {Promise<PlayerProfileResponse>}
    */
-  async getAccountInfo({ nameOnPlatform, platformType }) {
+  async getProfile({ nameOnPlatform, platformType, platform_families }) {
     try {
       if (!nameOnPlatform || !platformType) {
         throw new Error('Missing required parameters: nameOnPlatform, platformType');
       }
-
-      /** @type {{ type: 'accountInfo', nameOnPlatform: string, platformType: PlatformType }} */
-      const params = {
-        type: 'accountInfo',
-        nameOnPlatform,
-        platformType,
-      };
-
-      const url = buildUrlAndParams('/stats', params);
-      const response = await this.client.httpClient.get(url);
-      return response.data;
-    } catch (error) {
-      const err = asHttpError(error);
-      console.error('Error during the getAccountInfo request:', err.message);
-      if (err.response?.status === 401) {
-        throw new Error('Authentication error');
-      }
-      throw err;
-    }
-  }
-
-  /**
-   * Get Rainbow Six Siege player ban status.
-   * @param {GetIsBannedParams} params
-   * @returns {Promise<any>}
-   */
-  async getIsBanned({ nameOnPlatform, platformType }) {
-    try {
-      if (!nameOnPlatform || !platformType) {
-        throw new Error('Missing required parameters: nameOnPlatform, platformType');
+      if (platform_families && !VALID_PLATFORM_FAMILIES.has(platform_families)) {
+        throw new Error('Invalid platform_families. Must be one of: pc, psn, xbl');
       }
 
-      /** @type {{ type: 'isBanned', nameOnPlatform: string, platformType: PlatformType }} */
-      const params = {
-        type: 'isBanned',
-        nameOnPlatform,
-        platformType,
-      };
-
-      const url = buildUrlAndParams('/stats', params);
-      const response = await this.client.httpClient.get(url);
-      return response.data;
-    } catch (error) {
-      const err = asHttpError(error);
-      console.error('Error during the getIsBanned request:', err.message);
-      if (err.response?.status === 401) {
-        throw new Error('Authentication error');
-      }
-      throw err;
-    }
-  }
-
-  /**
-   * Get Rainbow Six Siege player statistics.
-   * @param {PlayerStatsParams} params
-   * @returns {Promise<any>}
-   */
-  async getPlayerStats({ nameOnPlatform, platformType, platform_families, board_id }) {
-    try {
-      if (!nameOnPlatform || !platformType || !platform_families) {
-        throw new Error('Missing required parameters: nameOnPlatform, platformType, platform_families');
-      }
-
-      validateBoardId(board_id);
-
-      /** @type {{ type: 'stats', nameOnPlatform: string, platformType: PlatformType, platform_families: PlatformFamily, board_id?: BoardId }} */
-      const params = {
-        type: 'stats',
+      const url = buildUrlAndParams('/v2/profile', {
         nameOnPlatform,
         platformType,
         platform_families,
-      };
-
-      if (board_id) {
-        params.board_id = board_id;
-      }
-
-      const url = buildUrlAndParams('/stats', params);
-      const response = await this.client.httpClient.get(url);
-      filterBoardProfiles(response.data, board_id);
-      return response.data;
-    } catch (error) {
-      const err = asHttpError(error);
-      console.error('Error during the getPlayerStats request:', err.message);
-      if (err.response?.status === 401) {
-        throw new Error('Authentication error');
-      }
-      throw err;
-    }
-  }
-
-  /**
-   * Compare Rainbow Six Siege player statistics between multiple players.
-   * @param {PlayerComparisonsParams} params
-   * @returns {Promise<{ comparisons: any[], errors?: Array<{ player: ComparisonPlayer, error: string }> }>}
-   */
-  async getPlayerComparisons({ players, platform_families, board_id }) {
-    try {
-      if (!players || !Array.isArray(players) || players.length < 2) {
-        throw new Error('At least 2 players are required for comparison');
-      }
-
-      if (!platform_families) {
-        throw new Error('Missing required parameter: platform_families');
-      }
-
-      players.forEach((player, index) => {
-        if (!player.nameOnPlatform || !player.platformType) {
-          throw new Error(`Player ${index + 1} is missing required fields: nameOnPlatform, platformType`);
-        }
       });
-
-      validateBoardId(board_id);
-
-      /** @type {any[]} */
-      const playerStats = [];
-      /** @type {Array<{ player: ComparisonPlayer, error: string }>} */
-      const errors = [];
-
-      for (const player of players) {
-        try {
-          /** @type {{ type: 'stats', nameOnPlatform: string, platformType: PlatformType, platform_families: PlatformFamily, board_id?: BoardId }} */
-          const params = {
-            type: 'stats',
-            nameOnPlatform: player.nameOnPlatform,
-            platformType: player.platformType,
-            platform_families,
-          };
-
-          if (board_id) {
-            params.board_id = board_id;
-          }
-
-          const url = buildUrlAndParams('/stats', params);
-          const response = await this.client.httpClient.get(url);
-          filterBoardProfiles(response.data, board_id);
-
-          if (response.data?.platform_families_full_profiles?.length > 0) {
-            playerStats.push({ player, stats: response.data, success: true });
-          } else {
-            playerStats.push({ player, stats: null, success: false, error: 'No stats found for player' });
-          }
-        } catch (error) {
-          const err = asHttpError(error);
-          errors.push({ player, error: err.message });
-          playerStats.push({ player, stats: null, success: false, error: err.message });
-        }
-      }
-
-      return {
-        comparisons: playerStats,
-        errors: errors.length > 0 ? errors : undefined,
-      };
-    } catch (error) {
-      const err = asHttpError(error);
-      console.error('Error during the getPlayerComparisons request:', err.message);
-      throw err;
-    }
-  }
-
-  /**
-   * Get Rainbow Six Siege player stats or account information.
-   * @param {{ type: 'accountInfo' | 'stats', nameOnPlatform: string, platformType: PlatformType, platform_families?: PlatformFamily, board_id?: BoardId }} params
-   * @returns {Promise<any>}
-   */
-  async getStats({ type, nameOnPlatform, platformType, platform_families, board_id }) {
-    try {
-      if (!type || !nameOnPlatform || !platformType) {
-        throw new Error('Missing required parameters: type, nameOnPlatform, platformType');
-      }
-
-      if (type !== 'accountInfo' && type !== 'stats') {
-        throw new Error('Invalid type parameter. Must be "accountInfo" or "stats"');
-      }
-
-      if (type === 'stats' && !platform_families) {
-        throw new Error('platform_families parameter is required for stats type');
-      }
-
-      validateBoardId(board_id);
-
-      /** @type {{ type: 'accountInfo' | 'stats', nameOnPlatform: string, platformType: PlatformType, platform_families?: PlatformFamily, board_id?: BoardId }} */
-      const params = {
-        type,
-        nameOnPlatform,
-        platformType,
-      };
-
-      if (type === 'stats') {
-        params.platform_families = platform_families;
-        if (board_id) {
-          params.board_id = board_id;
-        }
-      }
-
-      const url = buildUrlAndParams('/stats', params);
       const response = await this.client.httpClient.get(url);
-      if (type === 'stats') {
-        filterBoardProfiles(response.data, board_id);
-      }
       return response.data;
     } catch (error) {
-      const err = asHttpError(error);
-      console.error(`Error during the getStats (${type}) request:`, err.message);
-      if (err.response?.status === 401) {
-        throw new Error('Authentication error');
-      }
-      throw err;
+      return rethrowRequestError('getProfile', error);
     }
   }
 
   /**
-   * Get Rainbow Six Siege operator stats.
+   * Get V2 player operator statistics with optional season and mode filters.
    * @param {OperatorStatsParams} params
-   * @returns {Promise<any>}
+   * @returns {Promise<OperatorStatsResponse>}
    */
   async getOperatorStats({ nameOnPlatform, platformType, seasonYear, modes }) {
     try {
       if (!nameOnPlatform || !platformType) {
         throw new Error('Missing required parameters: nameOnPlatform, platformType');
       }
-
-      /** @type {{ type: 'operatorStats', nameOnPlatform: string, platformType: PlatformType, modes?: 'ranked' | 'casual' | 'unranked', seasonYear?: string }} */
-      const params = {
-        type: 'operatorStats',
-        nameOnPlatform,
-        platformType,
-        modes,
-      };
-
-      if (seasonYear) {
-        params.seasonYear = seasonYear;
+      if (modes && !VALID_OPERATOR_MODES.has(modes)) {
+        throw new Error(`Invalid modes. Must be one of: ${[...VALID_OPERATOR_MODES].join(', ')}`);
       }
 
-      const url = buildUrlAndParams('/stats', params);
+      const url = buildUrlAndParams('/v2/operators', {
+        nameOnPlatform,
+        platformType,
+        seasonYear,
+        modes,
+      });
       const response = await this.client.httpClient.get(url);
       return response.data;
     } catch (error) {
-      const err = asHttpError(error);
-      console.error('Error during the getOperatorStats request:', err.message);
-      if (err.response?.status === 401) {
-        throw new Error('Authentication error');
-      }
-      throw err;
+      return rethrowRequestError('getOperatorStats', error);
     }
   }
 
   /**
-   * Get Rainbow Six Siege player stats for current season.
-   * @param {SeasonalStatsParams} params
-   * @returns {Promise<any>}
+   * Get the V2 ranked leaderboard.
+   * @param {LeaderboardParams} [params={}]
+   * @returns {Promise<LeaderboardResponse>}
    */
-  async getSeasonalStats({ nameOnPlatform, platformType }) {
+  async getLeaderboard({ page, platform } = {}) {
     try {
-      if (!nameOnPlatform || !platformType) {
-        throw new Error('Missing required parameters: nameOnPlatform, platformType');
+      if (page !== undefined && (!Number.isInteger(page) || page < 1 || page > 50)) {
+        throw new Error('Invalid page. Must be an integer between 1 and 50');
+      }
+      if (platform && !VALID_PLATFORM_FAMILIES.has(platform)) {
+        throw new Error('Invalid platform. Must be one of: pc, psn, xbl');
       }
 
-      /** @type {{ type: 'seasonalStats', nameOnPlatform: string, platformType: PlatformType }} */
-      const params = {
-        type: 'seasonalStats',
-        nameOnPlatform,
-        platformType,
-      };
-
-      const url = buildUrlAndParams('/stats', params);
+      const url = buildUrlAndParams('/v2/leaderboard', { page, platform });
       const response = await this.client.httpClient.get(url);
       return response.data;
     } catch (error) {
-      const err = asHttpError(error);
-      console.error('Error during the getSeasonalStats request:', err.message);
-      if (err.response?.status === 401) {
-        throw new Error('Authentication error');
-      }
-      throw err;
+      return rethrowRequestError('getLeaderboard', error);
     }
   }
 }

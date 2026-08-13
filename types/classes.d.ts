@@ -1,10 +1,7 @@
 import {
-  AccountInfoParams,
-  GetIsBannedParams,
-  PlayerStatsParams,
-  SeasonalStatsParams,
+  ProfileParams,
   OperatorStatsParams,
-  PlayerComparisonsParams,
+  LeaderboardParams,
   GetMapsParams,
   GetOperatorsParams,
   GetSeasonsParams,
@@ -20,24 +17,24 @@ import {
 import {
   SearchAllResult,
   GameStats,
-  PlayerComparisonsResult,
+  TwitchStats,
+  PlayerProfileResponse,
+  OperatorStatsResponse,
+  LeaderboardResponse,
   MatchReplayResult,
   UploadReplaysResult
 } from './result-interfaces';
 
 export class Players {
-  getAccountInfo(params?: AccountInfoParams): Promise<any>;
-  getIsBanned(params?: GetIsBannedParams): Promise<any>;
-  getPlayerStats(params?: PlayerStatsParams): Promise<any>;
-  getStats(params?: any): Promise<any>;
-  getSeasonalStats(params?: SeasonalStatsParams): Promise<any>;
-  getOperatorStats(params?: OperatorStatsParams): Promise<any>;
-  getPlayerComparisons(params?: PlayerComparisonsParams): Promise<PlayerComparisonsResult>;
+  getProfile(params: ProfileParams): Promise<PlayerProfileResponse>;
+  getOperatorStats(params: OperatorStatsParams): Promise<OperatorStatsResponse>;
+  getLeaderboard(params?: LeaderboardParams): Promise<LeaderboardResponse>;
 }
 
 export class Game {
   getServiceStatus(): Promise<any>;
   getGameStats(): Promise<GameStats>;
+  getTwitchStats(): Promise<TwitchStats>;
   getMaps(params?: GetMapsParams): Promise<any[]>;
   getOperators(params?: GetOperatorsParams): Promise<any[]>;
   getSeasons(params?: GetSeasonsParams): Promise<any[]>;
@@ -59,7 +56,7 @@ export class MatchReplay {
 }
 
 export class R6Client {
-  constructor(config: { apiKey: string });
+  constructor(config: { apiKey: string; baseUrl?: string; siteBaseUrl?: string });
   players: Players;
   game: Game;
   webhooks: Webhooks;

@@ -99,7 +99,7 @@ class MatchReplay {
       }
 
       const url = `/replays/api/matches/${encodeURIComponent(matchId)}`;
-      const response = await this.client.httpClient.get(url);
+      const response = await this.client.httpClient.getSite(url);
       return response.data;
     } catch (error) {
       const err = asHttpError(error);
@@ -154,7 +154,7 @@ class MatchReplay {
         formData.append('replayFiles', entry.blob, entry.name);
       }
 
-      const response = await this.client.httpClient.postForm('/replays/api/upload', formData);
+      const response = await this.client.httpClient.postFormSite('/replays/api/upload', formData);
       return response.data;
     } catch (error) {
       const err = asHttpError(error);

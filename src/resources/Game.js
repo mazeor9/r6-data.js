@@ -9,6 +9,8 @@ const buildUrlAndParams = require('../utils/buildUrl');
 /** @typedef {import('../../types/params-interfaces').GetWeaponsParams} GetWeaponsParams */
 /** @typedef {import('../../types/params-interfaces').GetUniversalSkinsParams} GetUniversalSkinsParams */
 /** @typedef {import('../../types/params-interfaces').GetRanksParams} GetRanksParams */
+/** @typedef {import('../../types/result-interfaces').GameStats} GameStats */
+/** @typedef {import('../../types/result-interfaces').TwitchStats} TwitchStats */
 
 /**
  * @typedef {Error & {
@@ -38,16 +40,33 @@ class Game {
 
   /**
    * Get Rainbow Six Siege game stats for all platforms.
-   * @returns {Promise<any>}
+   * @returns {Promise<GameStats>}
    */
   async getGameStats() {
     try {
-      const url = buildUrlAndParams('/stats', { type: 'gameStats' });
-      const response = await this.client.httpClient.get(url);
+      const response = await this.client.httpClient.get('/v2/gamestats');
       return response.data;
     } catch (error) {
       const err = asHttpError(error);
       console.error('Error during the game stats request:', err.message);
+      if (err.response?.status === 401) {
+        throw new Error('request error');
+      }
+      throw err;
+    }
+  }
+
+  /**
+   * Get Rainbow Six Siege Twitch category statistics.
+   * @returns {Promise<TwitchStats>}
+   */
+  async getTwitchStats() {
+    try {
+      const response = await this.client.httpClient.get('/v2/twitchstats');
+      return response.data;
+    } catch (error) {
+      const err = asHttpError(error);
+      console.error('Error during the Twitch stats request:', err.message);
       if (err.response?.status === 401) {
         throw new Error('request error');
       }

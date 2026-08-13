@@ -27,13 +27,13 @@ npm i r6-data.js
 
 ## Getting Started
 
-> **Notice:** Due to the abuse of the available APIs, it is necessary to register on [r6data.com](https://r6data.com/) and create an API key to use this package.
+> **Notice:** Due to the abuse of the available APIs, it is necessary to register on [r6.arenyze.com](https://r6.arenyze.com/) and create an API key to use this package.
 
-## R6Data Website for stats and API
+## R6 Website for stats and API
 
 Website where you can directly track your stats and also check all the info that r6-data.js provides. The entire website is based on r6-data.js.
 
-Visit the official website: **[r6data.com](https://r6data.com/)**
+Visit the official website: **[r6.arenyze.com](https://r6.arenyze.com/)**
 
 ### 1. Initialization
 The entire SDK is accessed through the `R6Client` instance.
@@ -46,154 +46,163 @@ const r6 = new R6Client({
 });
 ```
 
+By default the SDK talks to two hosts:
+
+| Host | Used for |
+|---|---|
+| `https://public-api.arenyze.com/r6/api` | every stats and catalogue endpoint |
+| `https://r6.arenyze.com/api` | the match replay endpoints |
+
+Both accept the same API key. Either one can be pointed somewhere else — a
+staging deployment, a local instance — without changing anything else:
+
+```javascript
+const r6 = new R6Client({
+  apiKey: 'YOUR_API_KEY',
+  baseUrl: 'http://localhost:3002/r6/api',   // optional
+  siteBaseUrl: 'http://localhost:5000/api',  // optional, replay routes
+});
+```
+
 ### 2. TypeScript Support
 The SDK provides complete TypeScript declarations!
 
 ```typescript
-import { R6Client, AccountInfoParams } from 'r6-data.js';
+import { R6Client, ProfileParams, PlayerProfileResponse } from 'r6-data.js';
 
 const r6 = new R6Client({ apiKey: 'YOUR_API_KEY' });
 
-const params: AccountInfoParams = {
+const params: ProfileParams = {
   nameOnPlatform: 'PlayerName',
-  platformType: 'uplay'
+  platformType: 'uplay',
+  platform_families: 'pc'
 };
 
-const accountInfo = await r6.players.getAccountInfo(params);
+const profile: PlayerProfileResponse = await r6.players.getProfile(params);
 ```
 
 ---
 
 ## Players Resource (`r6.players`)
 
-Methods to get account information and stats about specific players. 
+Player Data V2 uses one profile request for account information, statistics, ban status, seasons, and rank history.
 
-### `getAccountInfo(params)`
-Retrieves player profile data from the official Rainbow Six Siege API. This function is specifically designed for retrieving account information.
+> **Migration to 3.3.0:** `getAccountInfo`, `getIsBanned`, `getPlayerStats`, `getStats`, `getSeasonalStats`, and `getPlayerComparisons` were replaced by `getProfile`. Operator statistics and leaderboards remain dedicated requests.
 
-**Parameters:**
-- `nameOnPlatform`: (Required) The player's name on the platform
-- `platformType`: (Required) The platform type - "uplay", "psn", or "xbl"
+### `getProfile(params)`
 
-**Response Include:**
-- Player level and experience
-- Clearance level
-- Achievement status
-- Play time statistics
-- Player profile settings and customization
-
-```javascript
-const accountInfo = await r6.players.getAccountInfo({
-  nameOnPlatform: 'PlayerName',
-  platformType: 'uplay'
-});
-```
-
-### `getIsBanned(params)`
-Checks if a player is currently banned from Rainbow Six Siege. Returns data indicating the player's ban status.
-
-```javascript
-const banStatus = await r6.players.getIsBanned({
-  nameOnPlatform: 'PlayerName',
-  platformType: 'uplay'
-});
-```
-
-### `getPlayerStats(params)`
-Retrieves detailed gameplay statistics from the official Rainbow Six Siege API. This function is specifically designed for retrieving player performance data across different game modes.
+Calls `GET /r6/api/v2/profile`.
 
 **Parameters:**
-- `nameOnPlatform`: (Required) The player's name on the platform
-- `platformType`: (Required) The platform type - "uplay", "psn", or "xbl"
-- `platform_families`: (Required) The platform family - "pc" or "console"
-- `board_id`: (Optional) The game mode to filter statistics - "casual", "event", "warmup", "standard", or "ranked"
 
-**Response Includes:**
-- Rank information & MMR (Matchmaking Rating)
-- Win/loss records & Seasonal performance data
-- Skill metrics across different gameplay modes
+- `nameOnPlatform` (required): player username.
+- `platformType` (required): `uplay`, `psn`, or `xbl`.
+- `platform_families` (optional): `pc`, `psn`, or `xbl`; inferred from `platformType` when omitted.
 
 ```javascript
-// Get player statistics for ranked mode only
-const rankedStats = await r6.players.getPlayerStats({
+const profile = await r6.players.getProfile({
   nameOnPlatform: 'PlayerName',
   platformType: 'uplay',
-  platform_families: 'pc',
-  board_id: 'ranked'
+  platform_families: 'pc'
 });
+
+console.log(profile.account);
+console.log(profile.stats);
+console.log(profile.banned);
+console.log(profile.seasons);
+console.log(profile.history);
+console.log(profile.meta);
 ```
 
-### `getPlayerComparisons(params)`
-Compares Rainbow Six Siege statistics between multiple players, providing rankings and comparison metrics.
+The response has this top-level shape:
 
-**Parameters:**
-- `players`: (Required) Array of player objects with `nameOnPlatform` and `platformType`
-- `platform_families`: (Required) "pc" or "console"
-- `board_id`: (Optional) Game mode filter - "casual", "ranked", etc.
-- `compareFields`: (Optional) Specific stats to compare (default: kills, deaths, wins, losses)
-
-```javascript
-const comparison = await r6.players.getPlayerComparisons({
-  players: [
-    { nameOnPlatform: 'Player1', platformType: 'uplay' },
-    { nameOnPlatform: 'Player2', platformType: 'uplay' }
-  ],
-  platform_families: 'pc',
-  board_id: 'ranked'
-});
-```
-
-### `getSeasonalStats(params)`
-Get detailed rank points history and seasonal progression for a specific player in the current season. Includes timestamp, rank information, RP values, and rank images.
-
-**Example Request:**
-```javascript
-const seasonalStats = await r6.players.getSeasonalStats({
-  nameOnPlatform: 'PlayerName',
-  platformType: 'uplay'
-});
-```
-
-**Example Response:**
-```json
+```jsonc
 {
-  "data": {
-    "history": {
-      "metadata": {
-        "key": "RankPoints",
-        "name": "Rank Points"
-      },
-      "data": [
-        [
-          "2025-10-14T21:43:27.315+00:00",
-          {
-            "displayName": "Rank Points",
-            "metadata": {
-              "rank": "PLATINUM II",
-              "imageUrl": "https://r6data.com/assets/img/r6_ranks_img/platinum-2.webp",
-              "color": "#44ccc2"
-            },
-            "value": 3300,
-            "displayValue": "3,300",
-            "displayType": "Number"
-          }
-        ]
-      ]
-    }
+  "player": {
+    "nameOnPlatform": "PlayerName",
+    "platformType": "uplay",
+    "platformFamilies": "pc"
+  },
+  "stats": {
+    "platform_families_full_profiles": []
+  },
+  "account": {
+    "level": 250,
+    "xp": 0,
+    "profilePicture": "https://avatars.ubisoft.com/..."
+  },
+  "banned": {
+    "isBanned": false,
+    "banAlerts": []
+  },
+  "seasons": {},
+  "history": {},
+  "meta": {
+    "included": ["stats", "account", "banned", "seasons", "history"],
+    "partial": false,
+    "errors": {}
   }
 }
 ```
 
+Only `stats` is mandatory upstream. If an optional block is unavailable it is `null`, while `meta.partial` and `meta.errors` describe the missing data.
+
 ### `getOperatorStats(params)`
-Get detailed operator statistics for a specific player.
-- **Parameters:** `{ nameOnPlatform, platformType, seasonYear?, modes? }`
+
+Calls `GET /r6/api/v2/operators`. Operator data has its own cache and filters, so it is intentionally separate from `getProfile`.
+
 ```javascript
-const opStats = await r6.players.getOperatorStats({
+const result = await r6.players.getOperatorStats({
   nameOnPlatform: 'PlayerName',
   platformType: 'uplay',
-  seasonYear: 'Y9S4', // Optional
-  modes: 'ranked'     // Optional, default is 'ranked'
+  seasonYear: 'Y11S2',
+  modes: 'ranked'
 });
+
+console.log(result.player);
+console.log(result.filters);
+console.log(result.operators.operators);
+```
+
+Supported modes are `all`, `ranked`, `standard`, `unranked`, `quick-match`, `casual`, `dual-front`, and `siege-cup`.
+
+### `getLeaderboard(params?)`
+
+Calls `GET /r6/api/v2/leaderboard` and returns rank-points leaderboard entries.
+
+```javascript
+const leaderboard = await r6.players.getLeaderboard({
+  page: 1,
+  platform: 'pc'
+});
+
+for (const entry of leaderboard.entries) {
+  console.log(
+    `#${entry.position}`,
+    entry.id,
+    entry.rankPoints,
+    entry.kd,
+    entry.matchesPlayed
+  );
+}
+```
+
+Response:
+
+```jsonc
+{
+  "platform": "pc",
+  "page": 1,
+  "entries": [
+    {
+      "id": "player-id",
+      "kd": 1.42,
+      "matchesPlayed": 320,
+      "rankPoints": 5120,
+      "position": 1
+    }
+  ]
+}
 ```
 
 ---
@@ -203,7 +212,7 @@ const opStats = await r6.players.getOperatorStats({
 Methods related to game metrics, operators, seasons, maps, and specific game modes.
 
 ### `getGameStats()`
-Real-time player count statistics across all platforms including Steam, Ubisoft Connect, PlayStation, Xbox, and total player counts.
+Calls `GET /r6/api/v2/gamestats` for current player-count estimates across Steam, Ubisoft Connect, PlayStation, and Xbox.
 
 **Example Request:**
 ```javascript
@@ -232,6 +241,19 @@ const gameStats = await r6.game.getGameStats();
   },
   "lastUpdated": "2025-10-15T22:39:38.636Z"
 }
+```
+
+### `getTwitchStats()`
+
+Calls `GET /r6/api/v2/twitchstats` for Rainbow Six Siege Twitch category metrics.
+
+```javascript
+const twitch = await r6.game.getTwitchStats();
+
+console.log(twitch.liveViewers.current);
+console.log(twitch.channels.live);
+console.log(twitch.watchTime.last7Days);
+console.log(twitch.category.followers);
 ```
 
 ### Metadata Methods (Filters)
@@ -311,8 +333,8 @@ const status = await r6.game.getServiceStatus();
 The `createDiscordR6Webhook()` function allows you to send Rainbow Six Siege player statistics directly to a Discord channel in beautifully formatted dynamic embeds. It automatically detects and formats data from `Ubisoft API` and `Steam`.
 
 ```javascript
-// First, get player statistics
-const playerStats = await r6.players.getPlayerStats({
+// Get the complete V2 player profile
+const profile = await r6.players.getProfile({
   nameOnPlatform: 'PlayerName',
   platformType: 'uplay',
   platform_families: 'pc'
@@ -321,7 +343,7 @@ const playerStats = await r6.players.getPlayerStats({
 // Send stats directly to Discord webhook
 const webhookResult = await r6.webhooks.createDiscordR6Webhook(
   'https://discord.com/api/webhooks/YOUR_WEBHOOK_ID/YOUR_WEBHOOK_TOKEN',
-  playerStats, 
+  profile,
   {
     playerName: 'PlayerName',
     title: 'Rainbow Six Siege Stats',
@@ -338,8 +360,9 @@ const webhookResult = await r6.webhooks.createDiscordR6Webhook(
 
 Upload Rainbow Six Siege `.rec` replay files and read back the parsed match data
 (scoreboard, kill feed, objective events, per-round breakdown, ...). These
-methods are backed by the r6data replay service and authenticate with the same
-API key used by the rest of the SDK.
+methods are served by the website (`https://r6.arenyze.com/api`) rather than by
+the public API host, and authenticate with the same API key used by the rest of
+the SDK.
 
 > **Notice:** Replay storage is plan-limited (free, pro, ultra, ...). The number
 > of replays you can keep is returned in the `quota` field of the upload

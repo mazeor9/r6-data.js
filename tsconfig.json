@@ -19,7 +19,7 @@
     "src/**/*.js",
     "index.d.ts",
     "types/**/*.d.ts",
-    "test.ts"
+    "tests/**/*.js"
   ],
   "exclude": [
     "node_modules",

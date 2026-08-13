@@ -121,7 +121,10 @@ class Webhooks {
     /** @type {'Steam' | 'Ubisoft' | 'Custom'} */
     let dataSource;
 
-    if (playerData?.stats) {
+    if (playerData?.stats?.platform_families_full_profiles) {
+      stats = this._parseUbisoftStatsFromResponse(playerData.stats);
+      dataSource = 'Ubisoft';
+    } else if (playerData?.stats) {
       stats = playerData.stats;
       dataSource = 'Steam';
     } else if (playerData?.platform_families_full_profiles) {

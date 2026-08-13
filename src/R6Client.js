@@ -6,7 +6,7 @@ const MatchReplay = require('./resources/MatchReplay');
 
 class R6Client {
   /**
-   * @param {{ apiKey: string }} config - Configuration options
+   * @param {{ apiKey: string, baseUrl?: string, siteBaseUrl?: string }} config - Configuration options
    */
   constructor(config) {
     if (!config || !config.apiKey) {
@@ -16,7 +16,13 @@ class R6Client {
     /** @type {string} */
     this.apiKey = config.apiKey;
 
-    this.httpClient = createHttpClient(this.apiKey);
+    /** @type {string|undefined} */
+    this.baseUrl = config.baseUrl;
+
+    /** @type {string|undefined} */
+    this.siteBaseUrl = config.siteBaseUrl;
+
+    this.httpClient = createHttpClient(this.apiKey, this.baseUrl, this.siteBaseUrl);
 
     this.players = new Players(this);
     this.game = new Game(this);

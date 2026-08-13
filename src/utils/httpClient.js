@@ -1,6 +1,8 @@
 const pkg = require('../../package.json');
 
-const BASE_URL = 'https://api.r6data.com/api';
+const DEFAULT_BASE_URL = 'https://public-api.arenyze.com/r6/api';
+
+const DEFAULT_SITE_BASE_URL = 'https://r6.arenyze.com/api';
 
 /**
  * @typedef {Object} HttpResponse
@@ -40,13 +42,20 @@ function joinUrl(baseURL, path) {
 
 /**
  * @param {string} apiKey
+ * @param {string} [baseUrl]
+ * @param {string} [siteBaseUrl]
  * @returns {{
  *   get: (url: string) => Promise<HttpResponse>,
  *   post: (url: string, data?: any) => Promise<HttpResponse>,
- *   postForm: (url: string, formData: FormData) => Promise<HttpResponse>
+ *   postForm: (url: string, formData: FormData) => Promise<HttpResponse>,
+ *   getSite: (url: string) => Promise<HttpResponse>,
+ *   postFormSite: (url: string, formData: FormData) => Promise<HttpResponse>
  * }}
  */
-function createHttpClient(apiKey) {
+function createHttpClient(apiKey, baseUrl, siteBaseUrl) {
+  const BASE_URL = String(baseUrl || DEFAULT_BASE_URL).replace(/\/+$/, '');
+  const SITE_BASE_URL = String(siteBaseUrl || DEFAULT_SITE_BASE_URL).replace(/\/+$/, '');
+
   /** @type {Record<string, string>} */
   const baseHeaders = {
     Accept: 'application/json',
@@ -101,11 +110,12 @@ function createHttpClient(apiKey) {
    * @param {string} method
    * @param {string} url
    * @param {any} [data]
+   * @param {string} [base]
    * @returns {Promise<HttpResponse>}
    */
-  function request(method, url, data) {
+  function request(method, url, data, base) {
     const absolute = isAbsoluteUrl(url);
-    const fullUrl = absolute ? url : joinUrl(BASE_URL, url);
+    const fullUrl = absolute ? url : joinUrl(base || BASE_URL, url);
 
     /** @type {Record<string, string>} */
     const headers = { ...baseHeaders };
@@ -122,6 +132,25 @@ function createHttpClient(apiKey) {
     }
 
     return send(method, fullUrl, headers, body);
+  }
+
+  /**
+   * @param {string} url
+   * @param {FormData} formData
+   * @param {string} base
+   * @returns {Promise<HttpResponse>}
+   */
+  function sendForm(url, formData, base) {
+    const absolute = isAbsoluteUrl(url);
+    const fullUrl = absolute ? url : joinUrl(base, url);
+
+    /** @type {Record<string, string>} */
+    const headers = { ...baseHeaders };
+    if (!absolute) {
+      headers['api-key'] = apiKey;
+    }
+
+    return send('POST', fullUrl, headers, formData);
   }
 
   return {
@@ -150,16 +179,24 @@ function createHttpClient(apiKey) {
      * @returns {Promise<HttpResponse>}
      */
     postForm(url, formData) {
-      const absolute = isAbsoluteUrl(url);
-      const fullUrl = absolute ? url : joinUrl(BASE_URL, url);
+      return sendForm(url, formData, BASE_URL);
+    },
 
-      /** @type {Record<string, string>} */
-      const headers = { ...baseHeaders };
-      if (!absolute) {
-        headers['api-key'] = apiKey;
-      }
+    /**
+     * @param {string} url
+     * @returns {Promise<HttpResponse>}
+     */
+    getSite(url) {
+      return request('GET', url, undefined, SITE_BASE_URL);
+    },
 
-      return send('POST', fullUrl, headers, formData);
+    /**
+     * @param {string} url
+     * @param {FormData} formData
+     * @returns {Promise<HttpResponse>}
+     */
+    postFormSite(url, formData) {
+      return sendForm(url, formData, SITE_BASE_URL);
     },
   };
 }
